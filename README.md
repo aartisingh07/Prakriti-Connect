@@ -1,0 +1,1 @@
+Prakriti Connect is a full-stack eco-commerce web application designed to promote sustainable and environmentally friendly products. Built using Spring Boot, MySQL, HTML, CSS, and JS, the project focuses on real-world application flow such as user authentication, product management, order placement, delivery handling, and transaction simulation.
