@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prakriti Connect - Dashboard</title>
+    <style>
+        /* ===================== GLOBAL HEADER ===================== */
+        body{
+            background: url("/images/Background Image.jpg");
+        }
+        .main-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+
+            height: 72px;
+            padding: 0 32px;
+
+            background: linear-gradient(90deg, #065f46, #047857);
+            color: gold;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+        }
+
+        /* LEFT */
+        .brand {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        /* CENTER */
+        .header-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+            font-style: italic;
+            opacity: 0.9;
+            white-space: nowrap;
+        }
+
+        /* RIGHT */
+        .header-right {
+            position: relative;
+        }
+
+        /* MENU ICON */
+        .menu-icon {
+            font-size: 26px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 8px;
+        }
+
+        .menu-icon:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        /* HIDE CHECKBOX */
+        #menu-toggle {
+            display: none;
+        }
+
+        /* DROPDOWN */
+        .dropdown-menu {
+            position: absolute;
+            top: 52px;
+            right: 0;
+
+            background: white;
+            border-radius: 10px;
+            width: 200px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* SHOW MENU */
+        #menu-toggle:checked + .menu-icon + .dropdown-menu {
+            display: flex;
+        }
+
+        /* LINKS */
+        .dropdown-menu {
+            position: absolute;
+            top: 52px;
+            right: 0;
+
+            background: white;
+            border-radius: 10px;
+            width: 200px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+
+            display: flex;
+            flex-direction: column;
+
+            /* animation setup */
+            opacity: 0;
+            transform: translateY(-10px) scale(0.98);
+            pointer-events: none;
+
+            transition: all 0.25s ease;
+        }
+
+        /* show with animation */
+        #menu-toggle:checked + .menu-icon + .dropdown-menu {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            padding: 12px 18px;
+            text-decoration: none;
+            color: #065f46;
+            font-size: 15px;
+
+            transition: background 0.2s ease, padding-left 0.2s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background: #e8f5e9;
+            padding-left: 26px;
+        }
+        .dot {
+            width: 6px;
+            height: 6px;
+            background-color: #2e7d32;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .dropdown-menu .logout {
+            color: #c62828;
+            font-weight: 600;
+        }
+
+        .dropdown-menu .logout .dot {
+            background-color: #c62828;
+        }
+        /* ================= POPUP ================= */
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+
+        /* show popup */
+        .popup-overlay:target {
+            display: flex;
+        }
+
+        .popup-card {
+            width: 360px;
+            background: white;
+            padding: 24px;
+            border-radius: 14px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            animation: popupFade 0.25s ease;
+        }
+
+        @keyframes popupFade {
+            from {
+                opacity: 0;
+                transform: scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .popup-card h2 {
+            margin-bottom: 16px;
+            color: #065f46;
+        }
+
+        /* form fields */
+        .popup-card label {
+            display: block;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        .popup-card input,
+        .popup-card select {
+            width: 100%;
+            margin-top: 6px;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        .popup-card input:focus,
+        .popup-card select:focus {
+            outline: none;
+            border-color: #2e7d32;
+        }
+
+        /* actions */
+        .popup-actions {
+            margin-top: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            text-decoration: none;
+            color: #555;
+            padding: 8px 12px;
+        }
+
+        .close-btn:hover {
+            text-decoration: underline;
+        }
+        /* UPDATE BUTTON */
+        .btn-primary {
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        /* Hover effect */
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #1b5e20, #2e7d32);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+        }
+
+        /* Click effect */
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+        /* USER INFO IN MENU */
+        .menu-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 14px 16px;
+            background: #f1f8f4;
+            border-bottom: 1px solid #dfeee5;
+        }
+
+        .user-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2e7d32, #66bb6a);
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-details span:first-child {
+            font-weight: 600;
+            color: #065f46;
+            font-size: 14px;
+        }
+
+        .user-details span:last-child {
+            font-size: 12px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<header class="main-header">
+    <!-- LEFT -->
+    <div class="header-left">
+        <a href="customer.html" class="brand">
+            Prakriti Connect
+        </a>
+    </div>
+
+    <!-- CENTER -->
+    <div class="header-center">
+        Connecting People with Nature
+    </div>
+
+    <!-- RIGHT -->
+    <div class="header-right">
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">&#9776;</label>
+
+        <nav class="dropdown-menu">
+
+            <!-- USER INFO HEADER -->
+            <div class="menu-user-info">
+                <div class="user-avatar">👤</div>
+                <div class="user-details">
+                    <span id="menu-username">Username</span>
+                    <span id="menu-userid">ID: --</span>
+                </div>
+            </div>
+
+            <a href="#update-profile"><span class="dot"></span>Update Profile</a>
+            <a href="#news"><span class="dot"></span>News</a>
+            <a href="#" onclick="redirectToProducts()"><span class="dot"></span>Products</a>
+            <a href="#notifications"><span class="dot"></span>Notifications</a>
+            <a role="button" onclick="openMyOrders()"><span class="dot"></span>My Orders</a>
+
+            <a href="login.html" class="logout">
+                <span class="dot"></span>Logout
+            </a>
+        </nav>
+
+    </div>
+</header>
+<!-- UPDATE PROFILE POPUP -->
+<div class="popup-overlay" id="update-profile">
+    <div class="popup-card">
+        <h2>Update Profile</h2>
+
+        <form>
+            <label for="update-field">Select field</label>
+            <select id="update-field" required>
+                <option value="">-- Select --</option>
+                <option value="name">Name</option>
+                <option value="email">Email</option>
+                <option value="phone">Phone Number</option>
+                <option value="password">Password</option>
+            </select>
+
+            <label for="update-value">New value</label>
+            <input
+                    type="text"
+                    id="update-value"
+                    placeholder="Enter new value"
+                    required
+            >
+
+            <div class="popup-actions">
+                <button type="submit" class="btn-primary">Update</button>
+                <a href="#" class="close-btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- MY ORDERS POPUP -->
+<div class="popup-overlay" id="my-orders-popup">
+    <div class="popup-card" style="width:600px; max-height:80vh; overflow-y:auto;">
+        <h2>📦 My Orders</h2>
+
+        <div id="ordersList">
+            <p>Loading orders...</p>
+        </div>
+
+        <div class="popup-actions">
+            <a href="#" class="close-btn">Close</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ================= LOAD USER DETAILS FOR MENU =================
+    const userId = localStorage.getItem("userId");
+
+    if (userId) {
+        fetch(`http://localhost:9091/get-details/${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("menu-username").innerText = data.username;
+                document.getElementById("menu-userid").innerText = "ID: " + data.id;
+            })
+            .catch(err => {
+                console.error("Failed to load user details", err);
+            });
+    }
+
+    // ================= UPDATE PROFILE =================
+    const form = document.querySelector(".popup-card form");
+    const fieldSelect = document.getElementById("update-field");
+    const valueInput = document.getElementById("update-value");
+
+    // message element
+    const msg = document.createElement("p");
+    msg.style.marginTop = "10px";
+    msg.style.fontSize = "14px";
+    form.appendChild(msg);
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const key = fieldSelect.value;
+        const value = valueInput.value.trim();
+
+        if (!key) {
+            showMessage("Please select a field", "red");
+            return;
+        }
+
+        if (!value) {
+            showMessage("Value cannot be empty", "red");
+            return;
+        }
+
+        // backend validation safety
+        if (key === "phone") {
+            showMessage("Phone update not supported yet", "red");
+            return;
+        }
+
+        const payload = {
+            id: userId,
+            key: key,
+            value: value
+        };
+
+        fetch("http://localhost:9091/update", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        })
+            .then(res => res.text())
+            .then(data => {
+                if (data.toLowerCase().includes("success")) {
+                    showMessage(data, "green");
+
+                    // clear inputs
+                    valueInput.value = "";
+                    fieldSelect.value = "";
+
+                    // auto-close popup after success
+                    setTimeout(() => {
+                        window.location.hash = "";
+                    }, 1200);
+
+                } else {
+                    showMessage(data, "red");
+                }
+            })
+            .catch(() => {
+                showMessage("Server error occurred", "red");
+            });
+    });
+
+    function showMessage(text, color) {
+        msg.innerText = text;
+        msg.style.color = color;
+    }
+    function redirectToProducts() {
+        // show message
+        alert("Redirecting to products page...");
+
+        // redirect after 1 second
+        setTimeout(() => {
+            window.location.href = "products.html";
+        }, 1000);
+    }
+
+    function openMyOrders() {
+        const userId = localStorage.getItem("userId");
+
+        // 🔥 CLOSE MENU FIRST
+        document.getElementById("menu-toggle").checked = false;
+
+        // 🔥 OPEN POPUP
+        window.location.hash = "my-orders-popup";
+
+        fetch(`http://localhost:9091/orders/user/${userId}`)
+            .then(res => res.json())
+            .then(orders => {
+                const ordersList = document.getElementById("ordersList");
+                ordersList.innerHTML = "";
+
+                if (orders.length === 0) {
+                    ordersList.innerHTML = "<p>You haven’t placed any orders yet 🌱</p>";
+                    return;
+                }
+
+                orders.forEach(order => {
+                    const div = document.createElement("div");
+                    div.style.border = "1px solid #ccc";
+                    div.style.padding = "12px";
+                    div.style.marginBottom = "12px";
+                    div.style.borderRadius = "8px";
+
+                    div.innerHTML = `
+                  <p><strong>Order ID:</strong> ${order.id}</p>
+                  <p><strong>Product ID:</strong> ${order.productId}</p>
+                  <p><strong>Status:</strong> ${order.status}</p>
+                  <p><strong>Order Date:</strong> ${order.orderDate}</p>
+                  <p><strong>Delivery Date:</strong> ${order.deliveryDate}</p>
+                `;
+
+                    ordersList.appendChild(div);
+                });
+            })
+            .catch(() => {
+                document.getElementById("ordersList").innerHTML =
+                    "<p>Failed to load orders</p>";
+            });
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prakriti Connect - Sign Up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+            /* Dark overlay + background image */
+            background:
+                    linear-gradient(
+                            rgba(0, 0, 0, 0.45),
+                            rgba(0, 0, 0, 0.45)
+                    ),
+                    url("https://www.hdwallpapers.in/download/purple_flowers_green_grass_field_mountain_slope_under_blue_sky_4k_hd_nature-1920x1080.jpg");
+
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+
+            min-height: 50vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 450px;
+
+            /* TRUE glass effect */
+            background: rgba(255, 255, 255, 0.25);
+            /*backdrop-filter: blur(15px);*/
+            /*-webkit-backdrop-filter: blur(18px);*/
+
+            border-radius: 20px;
+
+            /* Glass border */
+            border: 1px solid rgba(255, 255, 255, 0.35);
+
+            /* Depth */
+            box-shadow:
+                    0 25px 50px rgba(0, 0, 0, 0.35),
+                    inset 0 1px 1px rgba(255, 255, 255, 0.3);
+
+            overflow: hidden;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.35);
+            /*backdrop-filter: blur(12px);*/
+            /*-webkit-backdrop-filter: blur(12px);*/
+
+            padding: 16px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header h1 {
+            font-size: 22px;
+            margin-bottom: 4px;
+            color: #2e7d32;
+        }
+
+        .header p {
+            font-size: 15px;
+            color: yellow;
+        }
+
+
+        /* Content section */
+        .content {
+            padding: 22px 35px;
+            background: transparent;
+        }
+
+        h2 {
+            color: white;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        /* Form fields */
+        .form-group {
+            margin-bottom: 20px; //
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: antiquewhite;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+             width: 100%;
+             padding: 10px 14px;   /* reduced from 12px */
+             border: 2px solid #e0e0e0;
+             border-radius: 8px;
+             font-size: 14px;
+         }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4caf50;
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
+        }
+
+        /* Button */
+        .btn {
+            width: 100%;
+            margin: 10px auto 0 auto;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 600;
+            background: linear-gradient(135deg, #2f6f6d, #4fa3a1);
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(67, 160, 71, 0.4);
+        }
+
+        /* Button full width */
+        .btn {
+            grid-column: span 2;
+        }
+
+        /* Links */
+        .link {
+            text-align: center;
+            margin-top: 18px;
+            color: papayawhip;
+            font-size: 14px;
+        }
+
+        .link a {
+            color: cornflowerblue;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* Message box */
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #1b5e20;
+            border: 1px solid #c8e6c9;
+        }
+
+        .message.error {
+            background: #fdecea;
+            color: #b71c1c;
+            border: 1px solid #f5c6cb;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        /* Reduce form height using grid layout */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+            /*grid-template-columns: 1fr 1fr;*/
+        /*    gap: 10px 18px;   !* tighter gaps *!*/
+        /*}*/
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>🌱 Prakriti Connect</h1>
+        <p>"Create your account to stay connected with nature"</p>
+    </div>
+
+    <div class="content">
+        <h2>Sign Up</h2>
+
+        <div id="signupMessage" class="message"></div>
+
+        <form id="signupForm">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="signupName" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fa fa-user"></i>
+                <label>Username</label>
+                <input type="text" id="signupUsername" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fa fa-envelope"></i>
+                <label>Email</label>
+                <input type="email" id="signupEmail" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fa fa-lock"></i>
+                <label>Password</label>
+                <input type="password" id="signupPassword" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fa fa-map-marker-alt"></i>
+                <label>State</label>
+                <input type="text" id="signupState" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fa fa-city"></i>
+                <label>City</label>
+                <input type="text" id="signupCity" required>
+            </div>
+
+            <div class="form-group">
+                <i class="fa fa-phone"></i>
+                <label>Phone</label>
+                <input type="text" id="signupPhone" required>
+            </div>
+
+            <div class="form-group">
+                <label>Role</label>
+                <select id="signupRole" required>
+                    <option value="">Select Role</option>
+                    <option value="customer">Customer</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn">Create Account</button>
+        </form>
+
+        <div class="link">
+            Already have an account? <a onclick="window.location.href='login.html'">Login</a>
+        </div>
+        <div class="link">
+            <a onclick="window.location.href='home.html'">← Back to Home</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const showMessage = (id, text, type) => {
+        const msg = document.getElementById(id);
+        msg.innerText = text;
+        msg.className = "message " + type + " show";
+    };
+
+    const signupForm = document.getElementById("signupForm");
+
+    signupForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        const signupData = {
+            name: document.getElementById("signupName").value,
+            username: document.getElementById("signupUsername").value,
+            email: document.getElementById("signupEmail").value,
+            password: document.getElementById("signupPassword").value,
+            state: document.getElementById("signupState").value,
+            city: document.getElementById("signupCity").value,
+            phone: document.getElementById("signupPhone").value,
+            role: document.getElementById("signupRole").value
+        };
+
+        fetch("http://localhost:9091/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(signupData)
+        })
+            .then(response => response.text())
+            .then(result => {
+                if (result === "Successfully Registered") {
+                    showMessage(
+                        "signupMessage",
+                        "Account created successfully! Please login.",
+                        "success"
+                    );
+
+                    window.location.href = "login.html";
+                } else {
+                    showMessage("signupMessage", result, "error");
+                }
+                setTimeout(() => {
+                        if (role === "admin") {
+                            window.location.href = `admin.html?id=${result}`;
+                        } else {
+                            window.location.href = `customer.html?id=${result}`;
+                        }
+                    }, 800);
+            })
+            .catch(error => {
+                showMessage(
+                    "signupMessage",
+                    "Error connecting to server. Please try again.",
+                    "error"
+                );
+                console.error("Signup error:", error);
+            });
+    });
+</script>
+
+</body>
+</html>
