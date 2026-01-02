@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Prakriti Connect - Admin Panel</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: url("/images/background-img.jpg");
+    }
+
+    /* ================= HEADER ================= */
+    .admin-header {
+      width: 100%;
+      height: 80px;
+      background: linear-gradient(90deg, #1b5e20, #2e7d32);
+      color: white;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 0 30px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .admin-title {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 14px;
+    }
+
+    .admin-btn {
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      transition: all 0.25s ease;
+    }
+
+    .add-product-btn {
+      background: white;
+      color: #1b5e20;
+    }
+
+    .add-product-btn:hover {
+      background: #e8f5e9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+    }
+
+    .orders-btn {
+      background: #c8e6c9;
+      color: #1b5e20;
+    }
+
+    .orders-btn:hover {
+      background: #b2dfdb;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+    }
+
+    .logout-btn {
+      background: #c62828;
+      color: white;
+    }
+
+    .logout-btn:hover {
+      background: #b71c1c;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+    }
+
+    .admin-btn:active {
+      transform: translateY(0);
+      box-shadow: none;
+    }
+
+    /* ================= MAIN CONTAINER ================= */
+    .admin-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    /* ================= WELCOME SECTION ================= */
+    .admin-welcome {
+      display: inline-block;
+      margin: 30px 0 40px 40px;
+      padding: 18px 26px;
+
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(1px);
+
+      border-radius: 14px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    .admin-welcome h2 {
+      margin: 0;
+      font-size: 26px;
+      color: darkgreen;
+    }
+
+    .admin-welcome p {
+      margin-top: 6px;
+      font-size: 14px;
+      color: #2e7d32;
+      font-weight: 600;
+    }
+
+    /* ================= STATS ================= */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .stat-box {
+      background: white;
+      padding: 26px 20px;
+      border-radius: 14px;
+      text-align: center;
+
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      transition: transform 0.25s ease;
+    }
+
+    .stat-box:hover {
+      transform: translateY(-6px);
+    }
+
+    .stat-box h3 {
+      font-size: 28px;
+      color: #2e7d32;
+      margin-bottom: 6px;
+    }
+
+    .stat-box span {
+      font-size: 14px;
+      color: #555;
+      font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ================= HEADER ================= -->
+<div class="admin-header">
+  <div class="admin-title">
+    🌿 Prakriti Connect – Admin Panel
+  </div>
+
+  <div class="admin-actions">
+    <button class="admin-btn add-product-btn">➕ Add Product</button>
+    <button class="admin-btn orders-btn">📦 View Orders</button>
+    <button class="admin-btn logout-btn" onclick="logoutAdmin()">🚪 Logout</button>
+  </div>
+</div>
+
+<!-- ================= CONTENT ================= -->
+<div class="admin-container">
+
+  <!-- WELCOME -->
+  <div class="admin-welcome">
+    <h2 id="adminName">Welcome, Admin</h2>
+    <p id="adminUsername">@admin</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+    <div class="stat-box">
+      <h3 id="totalUsers">0</h3>
+      <span>Total Users</span>
+    </div>
+
+    <div class="stat-box">
+      <h3 id="totalOrders">0</h3>
+      <span>Total Orders Received</span>
+    </div>
+
+    <div class="stat-box">
+      <h3 id="totalProducts">0</h3>
+      <span>Total Products</span>
+    </div>
+
+    <div class="stat-box">
+      <h3 id="totalEarnings">₹0</h3>
+      <span>Total Earned</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function logoutAdmin() {
+    localStorage.clear();
+    window.location.href = "login.html";
+  }
+
+  // ================= LOAD ADMIN DETAILS =================
+  const adminId = localStorage.getItem("userId");
+  const role = localStorage.getItem("role");
+
+  if (!adminId || role !== "admin") {
+    window.location.href = "login.html";
+  }
+
+  fetch(`http://localhost:9091/get-details/${adminId}`)
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("adminName").innerText =
+                    "Welcome, " + data.name;
+
+            document.getElementById("adminUsername").innerText =
+                    "@" + data.username;
+          })
+          .catch(() => {
+            console.error("Failed to load admin details");
+          });
+</script>
+
+</body>
+</html>

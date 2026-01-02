@@ -11,4 +11,5 @@ import lombok.NoArgsConstructor;
 public class DisplayDto {
     int id;
     String username;
+    String name;
 }

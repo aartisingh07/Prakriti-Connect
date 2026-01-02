@@ -301,24 +301,33 @@
         })
             .then(response => response.text())
             .then(result => {
-                if (result === "Successfully Registered") {
+
+                if (result === "Signup Successful") {
                     showMessage(
                         "signupMessage",
-                        "Account created successfully! Please login.",
+                        "Account created successfully! Redirecting to login...",
                         "success"
                     );
 
-                    window.location.href = "login.html";
-                } else {
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 1200);
+
+                }
+                else if (result === "ALREADY REGISTERED") {
+                    showMessage(
+                        "signupMessage",
+                        "You already have an account. Redirecting to login...",
+                        "success"
+                    );
+
+                    setTimeout(() => {
+                        window.location.href = "login.html";
+                    }, 1000);
+                }
+                else {
                     showMessage("signupMessage", result, "error");
                 }
-                setTimeout(() => {
-                        if (role === "admin") {
-                            window.location.href = `admin.html?id=${result}`;
-                        } else {
-                            window.location.href = `customer.html?id=${result}`;
-                        }
-                    }, 800);
             })
             .catch(error => {
                 showMessage(

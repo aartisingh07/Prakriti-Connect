@@ -12,9 +12,17 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
-    UserRepo userRepo;
+    private UserRepo userRepo;
+
     @PostMapping("/register")
     public String register(@RequestBody User user) {
+//        if (adminRepo.existsByUsername(user.getUsername())) {
+//            return "REGISTERED SUCCESSFULLY";
+    //}
+
+        if (userRepo.existsByUsername(user.getUsername())) {
+        return "ALREADY REGISTERED";
+    }
         userRepo.save(user);
 
 //        History h1 = new History();
@@ -22,22 +30,26 @@ public class UserController {
 //        historyRepo.save(h1);
 
         return "Signup Successful";
-    }
-
-
+}
     @PostMapping("/login")
     public String login(@RequestBody LoginDto u) {
 
         User user = userRepo.findByUsername(u.getUsername());
 
         if (user == null) {
-            return "User Not Found";   // ✅ semicolon fixed
+            return "User Not Found";
         }
 
         if (!u.getPassword().equals(user.getPassword())) {
             return "Password Incorrect";
         }
-        return String.valueOf(user.getId()); // ✅ success
+
+        if (!u.getRole().equalsIgnoreCase(user.getRole())) {
+            return "Invalid Role";
+        }
+
+        // ✅ return id and role
+        return user.getId() + "," + user.getRole();
     }
 
     @GetMapping("/get-details/{id}")
@@ -47,6 +59,7 @@ public class UserController {
         DisplayDto displayDto = new DisplayDto();
         displayDto.setId(user.getId());          // 👈 IMPORTANT
         displayDto.setUsername(user.getUsername());
+        displayDto.setName(user.getName());
 
         return displayDto;
     }

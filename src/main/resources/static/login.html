@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prakriti Connect - Login</title>
+
     <style>
         * {
             margin: 0;
@@ -14,13 +15,12 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
-            /* Dark overlay + background image */
             background:
                     linear-gradient(
                             rgba(0, 0, 0, 0.45),
                             rgba(0, 0, 0, 0.45)
                     ),
-                    url("/images/Background Image.jpg");
+                    url("https://www.hdwallpapers.in/download/purple_flowers_green_grass_field_mountain_slope_under_blue_sky_4k_hd_nature-1920x1080.jpg");
 
             background-size: cover;
             background-position: center;
@@ -33,101 +33,52 @@
         }
 
         .container {
-            width: 95%;
-            max-width: 400px;
-
-            /* TRUE glass effect */
+            width: 90%;
+            max-width: 420px;
             background: rgba(255, 255, 255, 0.25);
-            /*backdrop-filter: blur(15px);*/
-            /*-webkit-backdrop-filter: blur(18px);*/
-
             border-radius: 20px;
-
-            /* Glass border */
-            border: 1px solid rgba(255, 255, 255, 0.35);
-
-            /* Depth */
-            box-shadow:
-                    0 25px 50px rgba(0, 0, 0, 0.35),
-                    inset 0 1px 1px rgba(255, 255, 255, 0.3);
-
-            overflow: hidden;
-        }
-
-        .header {
-            background: rgba(255, 255, 255, 0.35);
-            /*backdrop-filter: blur(12px);*/
-            /*-webkit-backdrop-filter: blur(12px);*/
-
-            padding: 16px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .header h1 {
-            font-size: 22px;
-            margin-bottom: 4px;
-            color: #2e7d32;
-        }
-
-        .header p {
-            font-size: 15px;
-            color: yellow;
-        }
-
-
-        /* Content section */
-        .content {
-            padding: 22px 35px;
-            background: transparent;
+            padding: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.35);
         }
 
         h2 {
-            color: white;
-            margin-bottom: 25px;
             text-align: center;
+            color: white;
+            margin-bottom: 20px;
         }
 
-        /* Form fields */
         .form-group {
-            margin-bottom: 10px;
+            margin-bottom: 16px;
         }
 
-        .form-group label {
+        label {
             display: block;
             margin-bottom: 6px;
             color: antiquewhite;
+            font-size: 14px;
             font-weight: 500;
-            font-size: 14px;
         }
 
-        .form-group input {
+        input, select {
             width: 100%;
-            padding: 10px 14px;   /* reduced from 12px */
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #4caf50;
-            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
-        }
-
-        /* Button */
-        .btn {
-            width: 40%;
-            margin: 10px auto 0 auto;
             padding: 10px;
-            border: none;
             border-radius: 8px;
+            border: none;
             font-size: 14px;
-            cursor: pointer;
+        }
+
+        .btn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 15px;
             font-weight: 600;
-            background: linear-gradient(135deg, #2f6f6d, #4fa3a1);
+            cursor: pointer;
+            background: linear-gradient(135deg, #2e7d32, #43a047);
             color: white;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.25s, box-shadow 0.25s;
         }
 
         .btn:hover {
@@ -135,12 +86,30 @@
             box-shadow: 0 8px 20px rgba(67, 160, 71, 0.4);
         }
 
-        /* Button full width */
-        .btn {
-            grid-column: span 2;
+        .message {
+            margin-bottom: 12px;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            display: none;
         }
 
-        /* Links */
+        .message.show {
+            display: block;
+        }
+
+        .success {
+            background: #e8f5e9;
+            color: #1b5e20;
+            border: 1px solid #c8e6c9;
+        }
+
+        .error {
+            background: #fdecea;
+            color: #b71c1c;
+            border: 1px solid #f5c6cb;
+        }
+
         .link {
             text-align: center;
             margin-top: 18px;
@@ -152,133 +121,106 @@
             color: cornflowerblue;
             text-decoration: none;
             font-weight: 600;
+            cursor: pointer;
         }
 
         .link a:hover {
             text-decoration: underline;
-            cursor: pointer;
-        }
-
-        /* Message box */
-        .message {
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-            display: none;
-        }
-
-        .message.success {
-            background: #e8f5e9;
-            color: #1b5e20;
-            border: 1px solid #c8e6c9;
-        }
-
-        .message.error {
-            background: #fdecea;
-            color: #b71c1c;
-            border: 1px solid #f5c6cb;
-        }
-
-        .message.show {
-            display: block;
-        }
-
-        /* Reduce form height using grid layout */
-        form {
-            display: flex;
-            flex-direction: column;
         }
     </style>
 </head>
+
 <body>
+
 <div class="container">
-    <div class="header">
-        <h1>🌱 Prakriti Connect</h1>
-        <p>“Welcome back. Stay connected with nature.”</p>
+    <h2>Login</h2>
+
+    <div id="loginMessage" class="message"></div>
+
+    <form id="loginForm">
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="username" required>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" required>
+        </div>
+
+        <!-- ✅ ROLE (as requested) -->
+        <div class="form-group">
+            <label>Role</label>
+            <select id="role" required>
+                <option value="">Select Role</option>
+                <option value="customer">Customer</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn">Login</button>
+    </form>
+
+    <!-- ✅ YOUR SIGNUP LINK (RESTORED) -->
+    <div class="link">
+        Don’t have an account?
+        <a onclick="window.location.href='signup.html'">Sign up</a>
     </div>
 
-    <div class="content">
-        <h2>Customer Login</h2>
-
-        <div id="loginMessage" class="message"></div>
-
-        <form id="loginForm">
-            <div class="form-group">
-                <label>Username</label>
-                <input type="text" id="loginUsername" required>
-            </div>
-
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="loginPassword" required>
-            </div>
-
-
-            <button type="submit" class="btn">Login</button>
-        </form>
-
-        <div class="link">
-            Don't have an account? <a onclick="window.location.href='signup.html'">Sign Up</a>
-        </div>
-        <div class="link">
-            <a onclick="window.location.href='home.html'">← Back to Home</a>
-        </div>
+    <div class="link">
+        <a onclick="window.location.href='home.html'">← Back to Home</a>
     </div>
 </div>
 
 <script>
-    const API_URL = 'http://localhost:9091';
+    const loginForm = document.getElementById("loginForm");
+    const msg = document.getElementById("loginMessage");
 
-    function showMessage(elementId, message, type) {
-        const messageEl = document.getElementById(elementId);
-        messageEl.textContent = message;
-        messageEl.className = `message ${type} show`;
-    }
+    const showMessage = (text, type) => {
+        msg.innerText = text;
+        msg.className = "message show " + type;
+    };
 
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    loginForm.addEventListener("submit", e => {
         e.preventDefault();
 
-        const loginData = {
-            username: document.getElementById('loginUsername').value,
-            password: document.getElementById('loginPassword').value,
+        const payload = {
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value,
+            role: document.getElementById("role").value
         };
 
-        try {
-            const response = await fetch(`${API_URL}/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(loginData)
+        fetch("http://localhost:9091/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+            .then(res => res.text())
+            .then(result => {
+
+                if (result.includes(",")) {
+                    const [id, role] = result.split(",");
+
+                    localStorage.setItem("userId", id);
+                    localStorage.setItem("role", role);
+
+                    showMessage("Login successful! Redirecting...", "success");
+
+                    setTimeout(() => {
+                        if (role === "admin") {
+                            window.location.href = "admin.html";
+                        } else {
+                            window.location.href = "customer.html";
+                        }
+                    }, 1000);
+
+                } else {
+                    showMessage(result, "error");
+                }
+            })
+            .catch(() => {
+                showMessage("Server error. Try again.", "error");
             });
-
-            const result = (await response.text()).trim();
-
-            if (/^\d+$/.test(result)) {
-                showMessage('loginMessage', 'Login successful! Redirecting...', 'success');
-
-                localStorage.clear();
-                localStorage.setItem("userId", result);
-
-                // const role = loginData.role.trim().toLowerCase();
-                // localStorage.setItem("role", role);
-
-                setTimeout(() => {
-                    // if (role === "admin") {
-                    //     window.location.href = `admin.html?id=${result}`;
-                    // } else {
-                        window.location.href = `customer.html?id=${result}`;
-                    // }
-                }, 800);
-
-            } else {
-                showMessage('loginMessage', result, 'error');
-            }
-        } catch (error) {
-            showMessage('loginMessage', 'Error connecting to server. Please try again.', 'error');
-            console.error('Login error:', error);
-        }
     });
 </script>
 

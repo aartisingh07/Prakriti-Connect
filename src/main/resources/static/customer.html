@@ -5,8 +5,17 @@
     <title>Prakriti Connect - Dashboard</title>
     <style>
         /* ===================== GLOBAL HEADER ===================== */
+        * {
+            box-sizing: border-box;
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
         body{
-            background: url("/images/Background Image.jpg");
+            background: url("/images/background-img.jpg");
+            overflow-x: hidden;
         }
         .main-header {
             position: sticky;
@@ -24,6 +33,9 @@
             justify-content: space-between;
 
             box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+
+            width: 100%;      /* ✅ NOT 100vw */
+            margin: 0;
         }
 
         /* LEFT */
@@ -297,6 +309,182 @@
             font-size: 12px;
             color: #555;
         }
+        /* ================= WELCOME SECTION ================= */
+        .welcome-section {
+            margin: 40px auto;
+            max-width: 1100px;
+            padding: 0 20px;
+        }
+
+        .welcome-content {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 18px;
+            padding: 36px 40px;
+            text-align: center;
+
+            box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+        }
+
+        .welcome-content h1 {
+            font-size: 28px;
+            color: #065f46;
+            margin-bottom: 12px;
+        }
+
+        .welcome-content p {
+            font-size: 16px;
+            color: #333;
+            max-width: 700px;
+            margin: 0 auto 22px auto;
+            line-height: 1.6;
+        }
+
+        .welcome-highlight {
+            display: flex;
+            justify-content: center;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
+
+        .welcome-highlight span {
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 999px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 6px 14px rgba(0,0,0,0.15);
+        }
+        /* ================= ECO SNAPSHOT ================= */
+        .eco-snapshot {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .eco-snapshot h2 {
+            text-align: center;
+            color: #065f46;
+            margin-bottom: 26px;
+            font-size: 24px;
+        }
+
+        .snapshot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+        }
+
+        .snapshot-card {
+            background: rgba(255, 255, 255, 0.92);
+            padding: 26px 22px;
+            border-radius: 16px;
+            text-align: center;
+
+            box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .snapshot-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 32px rgba(0,0,0,0.22);
+        }
+
+        .snapshot-icon {
+            font-size: 34px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .snapshot-card h3 {
+            font-size: 16px;
+            color: #2e7d32;
+            margin-bottom: 6px;
+        }
+
+        .snapshot-card p {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+        }
+        /* ================= FEATURED PRODUCTS ================= */
+        .featured-products {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .featured-products h2 {
+            color: #065f46;
+            font-size: 24px;
+            margin-bottom: 6px;
+        }
+
+        .featured-subtext {
+            font-size: 15px;
+            color: #444;
+            margin-bottom: 30px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .product-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            padding: 26px 20px;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 18px 36px rgba(0,0,0,0.25);
+        }
+
+        .product-card img {
+            width: 80px;
+            margin-bottom: 14px;
+        }
+
+        .product-card h3 {
+            color: #2e7d32;
+            font-size: 17px;
+            margin-bottom: 6px;
+        }
+
+        .product-card p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* View all button */
+        .view-all-btn {
+            margin-top: 28px;
+        }
+
+        .view-all-btn button {
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .view-all-btn button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+        }
+
     </style>
 </head>
 <body>
@@ -386,6 +574,87 @@
         </div>
     </div>
 </div>
+<!-- ================= WELCOME SECTION ================= -->
+<section class="welcome-section">
+    <div class="welcome-content">
+        <h1>🌱 Welcome to Prakriti Connect</h1>
+        <p>
+            A platform that connects you with eco-friendly products,
+            promotes sustainable living, and helps you track your
+            positive impact on nature.
+        </p>
+
+        <div class="welcome-highlight">
+            <span>🌿 Shop Sustainable</span>
+            <span>♻ Live Responsibly</span>
+            <span>🌍 Protect Nature</span>
+        </div>
+    </div>
+</section>
+<!-- ================= ECO SNAPSHOT ================= -->
+<section class="eco-snapshot">
+    <h2>🌱 Your Eco Snapshot</h2>
+
+    <div class="snapshot-grid">
+        <div class="snapshot-card">
+            <span class="snapshot-icon">📦</span>
+            <h3>Total Orders</h3>
+            <p id="total-orders">0</p>
+        </div>
+
+        <div class="snapshot-card">
+            <span class="snapshot-icon">🌿</span>
+            <h3>Eco Products Bought</h3>
+            <p id="eco-products">0</p>
+        </div>
+
+        <div class="snapshot-card">
+            <span class="snapshot-icon">♻</span>
+            <h3>CO₂ Saved</h3>
+            <p>Coming Soon</p>
+        </div>
+
+        <div class="snapshot-card">
+            <span class="snapshot-icon">🌍</span>
+            <h3>Green Journey</h3>
+            <p>In Progress</p>
+        </div>
+    </div>
+</section>
+<!-- ================= FEATURED PRODUCTS ================= -->
+<section class="featured-products">
+    <h2>🌿 Featured Eco Products</h2>
+    <p class="featured-subtext">
+        Handpicked sustainable products that make a positive impact on nature.
+    </p>
+
+    <div class="product-grid">
+        <!-- Product 1 -->
+        <div class="product-card">
+            <img src="https://cdn-icons-png.flaticon.com/512/2909/2909763.png" alt="Reusable Bottle">
+            <h3>Reusable Water Bottle</h3>
+            <p>Reduce plastic waste with eco-friendly bottles.</p>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product-card">
+            <img src="https://cdn-icons-png.flaticon.com/512/3082/3082031.png" alt="Organic Soap">
+            <h3>Organic Handmade Soap</h3>
+            <p>Chemical-free soaps made from natural ingredients.</p>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="product-card">
+            <img src="https://cdn-icons-png.flaticon.com/512/869/869869.png" alt="Cloth Bag">
+            <h3>Reusable Cloth Bag</h3>
+            <p>Say no to plastic bags. Carry sustainability.</p>
+        </div>
+    </div>
+
+    <div class="view-all-btn">
+        <button onclick="redirectToProducts()">View All Products →</button>
+    </div>
+</section>
 
 <script>
     // ================= LOAD USER DETAILS FOR MENU =================
@@ -527,6 +796,20 @@
             .catch(() => {
                 document.getElementById("ordersList").innerHTML =
                     "<p>Failed to load orders</p>";
+            });
+    }
+    // ================= ECO SNAPSHOT DATA =================
+    if (userId) {
+        fetch(`http://localhost:9091/orders/user/${userId}`)
+            .then(res => res.json())
+            .then(orders => {
+                document.getElementById("total-orders").innerText = orders.length;
+
+                // future logic
+                document.getElementById("eco-products").innerText = orders.length;
+            })
+            .catch(() => {
+                document.getElementById("total-orders").innerText = "-";
             });
     }
 
