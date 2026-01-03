@@ -484,6 +484,39 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 18px rgba(0,0,0,0.25);
         }
+        /* ================= FOOTER ================= */
+        .customer-footer {
+            margin-top: 80px;
+            padding: 22px 0;
+            text-align: center;
+
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(2px);
+
+            border-top: 1px solid #ddd;
+        }
+
+        .customer-footer p {
+            margin: 6px 0;
+            font-size: 14px;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .customer-footer span {
+            color: #555;
+            font-weight: 500;
+        }
+
+        .customer-footer a {
+            color: #065f46;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .customer-footer a:hover {
+            text-decoration: underline;
+        }
 
     </style>
 </head>
@@ -655,6 +688,20 @@
         <button onclick="redirectToProducts()">View All Products →</button>
     </div>
 </section>
+<!-- ================= FOOTER ================= -->
+<footer class="customer-footer">
+    <p>🌿 Prakriti Connect – Customer Dashboard</p>
+    <p>
+        <span>Version 1.0</span> •
+        <span>© 2026</span>
+    </p>
+    <p>
+        Built by <strong>Aarti Singh</strong> |
+        <a href="https://github.com/aartisingh07" target="_blank">
+            GitHub
+        </a>
+    </p>
+</footer>
 
 <script>
     // ================= LOAD USER DETAILS FOR MENU =================

@@ -13,7 +13,7 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: url("/images/background-img.jpg");
+      background: url("/images/background.jpg");
     }
 
     /* ================= HEADER ================= */
@@ -171,6 +171,181 @@
         grid-template-columns: 1fr;
       }
     }
+    /* ================= MODAL ================= */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.45);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+
+    .modal-card {
+      width: 90%;
+      max-width: 1000px;
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+      animation: popIn 0.3s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .close-btn {
+      border: none;
+      background: none;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    /* ================= TABLE ================= */
+    .orders-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .orders-table th,
+    .orders-table td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .orders-table th {
+      background: #e8f5e9;
+      color: #1b5e20;
+    }
+
+    .orders-table tr:hover {
+      background: #f1f8e9;
+    }
+
+    .recent-section {
+      margin-top: 50px;
+      background: rgba(255,255,255,0.85);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .section-title {
+      font-size: 20px;
+      color: #1b5e20;
+      margin-bottom: 16px;
+    }
+
+    .modal-card input,
+    .modal-card textarea {
+      width: 100%;
+      margin-bottom: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    .modal-card textarea {
+      resize: none;
+      height: 80px;
+    }
+    .toggle-switch {
+      position: relative;
+      width: 42px;
+      height: 22px;
+      display: inline-block;
+    }
+
+    .toggle-switch input {
+      display: none;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      background: #bdbdbd;        /* darker OFF color */
+      border: 1px solid #888;     /* 👈 border makes it visible */
+      border-radius: 22px;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transition: 0.3s;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 2px;
+      bottom: 2px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+      transition: 0.3s;
+    }
+
+    .toggle-switch input:checked + .slider {
+      background: #2e7d32;        /* green ON */
+      border-color: #1b5e20;
+    }
+
+    .toggle-switch input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+    .orders-table td {
+      vertical-align: middle;
+    }
+    /* ================= FOOTER ================= */
+    .admin-footer {
+      margin-top: 60px;
+      padding: 20px 0;
+      text-align: center;
+
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(2px);
+
+      border-top: 1px solid #ddd;
+    }
+
+    .admin-footer p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #2e7d32;
+      font-weight: 600;
+    }
+
+    .admin-footer span {
+      color: #555;
+      font-weight: 500;
+    }
+
+    .admin-footer a {
+      color: #1b5e20;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .admin-footer a:hover {
+      text-decoration: underline;
+    }
+
   </style>
 </head>
 <body>
@@ -182,8 +357,9 @@
   </div>
 
   <div class="admin-actions">
-    <button class="admin-btn add-product-btn">➕ Add Product</button>
-    <button class="admin-btn orders-btn">📦 View Orders</button>
+    <button class="admin-btn add-product-btn" onclick="openAddProduct()">➕ Add Product</button>
+    <button class="admin-btn orders-btn" onclick="openProducts()">📦 Manage Products</button>
+    <button class="admin-btn orders-btn" onclick="openOrders()">📦 View Orders</button>
     <button class="admin-btn logout-btn" onclick="logoutAdmin()">🚪 Logout</button>
   </div>
 </div>
@@ -220,6 +396,128 @@
     </div>
   </div>
 
+  <!-- ================= RECENT ORDERS ================= -->
+  <div class="recent-section">
+    <h3 class="section-title">🕒 Recent Orders</h3>
+
+    <table class="orders-table">
+      <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>User</th>
+        <th>Product</th>
+        <th>Amount</th>
+        <th>Status</th>
+      </tr>
+      </thead>
+      <tbody id="recentOrdersBody">
+      <tr><td colspan="5">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- ================= OUT OF STOCK PRODUCTS ================= -->
+  <div class="recent-section">
+    <h3 class="section-title">🚨 Out of Stock Products</h3>
+
+    <table class="orders-table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Status</th>
+      </tr>
+      </thead>
+      <tbody id="outOfStockBody">
+      <tr><td colspan="4">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ================= ORDERS POPUP ================= -->
+  <div class="modal-overlay" id="ordersModal">
+    <div class="modal-card">
+
+      <div class="modal-header">
+        <h3>📦 All Orders</h3>
+        <button class="close-btn" onclick="closeOrders()">✖</button>
+      </div>
+
+      <table class="orders-table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Product</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Order Date</th>
+        </tr>
+        </thead>
+        <tbody id="ordersTableBody"></tbody>
+      </table>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- ================= PRODUCTS POPUP ================= -->
+<div class="modal-overlay" id="productsModal">
+  <div class="modal-card">
+
+    <div class="modal-header">
+      <h3>📦 Manage Products</h3>
+      <button class="close-btn" onclick="closeProducts()">✖</button>
+    </div>
+
+    <table class="orders-table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Available</th>
+      </tr>
+      </thead>
+      <tbody id="productsTableBody"></tbody>
+    </table>
+
+  </div>
+</div>
+
+<!-- ================= ADD PRODUCT POPUP ================= -->
+<div class="modal-overlay" id="addProductModal">
+  <div class="modal-card" style="max-width: 500px;">
+
+    <div class="modal-header">
+      <h3>➕ Add Product</h3>
+      <button class="close-btn" onclick="closeAddProduct()">✖</button>
+    </div>
+
+    <input id="pName" placeholder="Product Name" />
+    <input id="pPrice" type="number" placeholder="Price" />
+    <input id="pStock" type="number" placeholder="Stock" />
+
+    <button class="admin-btn add-product-btn" onclick="saveProduct()">
+      Save Product
+    </button>
+
+  </div>
+</div>
+<!-- ================= FOOTER ================= -->
+<div class="admin-footer">
+  <p>🌿 Prakriti Connect – Admin Dashboard</p>
+  <p>
+    <span>Version 1.0</span> •
+    <span>© 2026</span>
+  </p>
+  <p>
+    Built by <strong>Aarti Singh</strong> |
+    <a href="https://github.com/aartisingh07" target="_blank">
+      GitHub
+    </a>
+  </p>
 </div>
 
 <script>
@@ -236,7 +534,7 @@
     window.location.href = "login.html";
   }
 
-  fetch(`http://localhost:9091/get-details/${adminId}`)
+  fetch(`http://localhost:9091/admin/get-details/${adminId}`)
           .then(res => res.json())
           .then(data => {
             document.getElementById("adminName").innerText =
@@ -248,6 +546,165 @@
           .catch(() => {
             console.error("Failed to load admin details");
           });
+
+  fetch("http://localhost:9091/admin/dashboard")
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById("totalUsers").innerText = data.totalUsers;
+            document.getElementById("totalOrders").innerText = data.totalOrders;
+            document.getElementById("totalProducts").innerText = data.totalProducts;
+            document.getElementById("totalEarnings").innerText = "₹" + data.totalEarnings;
+          });
+  function openOrders() {
+    document.getElementById("ordersModal").style.display = "flex";
+
+    fetch("http://localhost:9091/admin/orders")
+            .then(res => res.json())
+            .then(data => {
+              const tbody = document.getElementById("ordersTableBody");
+              tbody.innerHTML = "";
+
+              data.forEach(o => {
+                tbody.innerHTML += `
+          <tr>
+            <td>${o.orderId}</td>
+            <td>${o.username}</td>
+            <td>${o.productName}</td>
+            <td>₹${o.totalAmount}</td>
+            <td>${o.status}</td>
+            <td>${o.orderDate.replace("T", " ")}</td>
+          </tr>
+        `;
+              });
+            });
+  }
+
+  function closeOrders() {
+    document.getElementById("ordersModal").style.display = "none";
+  }
+  function openAddProduct() {
+    document.getElementById("addProductModal").style.display = "flex";
+  }
+
+  function closeAddProduct() {
+    document.getElementById("addProductModal").style.display = "none";
+  }
+
+  function saveProduct() {
+
+    const product = {
+      productName: document.getElementById("pName").value,
+      price: document.getElementById("pPrice").value
+    };
+
+    fetch("http://localhost:9091/admin/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(product)
+    })
+            .then(res => res.text())
+            .then(msg => {
+              alert(msg);
+              closeAddProduct();
+            })
+            .catch(() => alert("Failed to add product"));
+  }
+  function openProducts() {
+    document.getElementById("productsModal").style.display = "flex";
+
+    fetch("http://localhost:9091/products")
+            .then(res => res.json())
+            .then(products => {
+              const tbody = document.getElementById("productsTableBody");
+              tbody.innerHTML = "";
+
+              products.forEach(p => {
+                tbody.innerHTML += `
+          <tr>
+            <td>${p.id}</td>
+            <td>${p.productName}</td>
+            <td>₹${p.price}</td>
+            <td>
+              <label class="toggle-switch">
+                <input type="checkbox"
+                       ${p.available ? "checked" : ""}
+                       onchange="toggleProduct(${p.id})">
+                <span class="slider"></span>
+              </label>
+            </td>
+          </tr>
+        `;
+              });
+            });
+  }
+
+  function closeProducts() {
+    document.getElementById("productsModal").style.display = "none";
+  }
+
+  function toggleProduct(id) {
+    fetch(`http://localhost:9091/admin/products/${id}/toggle`, {
+      method: "PUT"
+    })
+            .then(() => {
+              // optional: refresh products list
+              openProducts();
+            });
+  }
+    fetch("http://localhost:9091/admin/orders")
+    .then(res => res.json())
+    .then(data => {
+    const tbody = document.getElementById("recentOrdersBody");
+    tbody.innerHTML = "";
+
+    data.slice(0, 5).forEach(o => {
+    tbody.innerHTML += `
+        <tr>
+          <td>${o.orderId}</td>
+          <td>${o.username}</td>
+          <td>${o.productName}</td>
+          <td>₹${o.totalAmount}</td>
+          <td>
+            <span style="
+              padding:4px 10px;
+              border-radius:12px;
+              font-weight:600;
+              color:white;
+              background:${o.status === 'PLACED' ? '#f9a825' : '#2e7d32'};
+            ">
+              ${o.status}
+            </span>
+          </td>
+        </tr>
+      `;
+  });
+  });
+
+  fetch("http://localhost:9091/products")
+          .then(res => res.json())
+          .then(products => {
+            const tbody = document.getElementById("outOfStockBody");
+            tbody.innerHTML = "";
+
+            const outOfStock = products.filter(p => !p.available);
+
+            if (outOfStock.length === 0) {
+              tbody.innerHTML = `<tr><td colspan="4">🎉 All products are available</td></tr>`;
+              return;
+            }
+
+            outOfStock.forEach(p => {
+              tbody.innerHTML += `
+        <tr>
+          <td>${p.id}</td>
+          <td>${p.productName}</td>
+          <td>₹${p.price}</td>
+          <td style="color:red;font-weight:700;">OUT OF STOCK</td>
+        </tr>
+      `;
+            });
+          });
+
 </script>
 
 </body>

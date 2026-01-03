@@ -27,6 +27,8 @@ public class Order {
     @Column(nullable = false)
     String status;
 
+    private double totalAmount;
+
     @CreationTimestamp
     LocalDateTime orderDate;
 

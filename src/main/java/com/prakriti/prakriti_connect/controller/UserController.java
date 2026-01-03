@@ -1,9 +1,12 @@
 package com.prakriti.prakriti_connect.controller;
 
+import com.prakriti.prakriti_connect.dto.AdminDto;
 import com.prakriti.prakriti_connect.dto.DisplayDto;
 import com.prakriti.prakriti_connect.dto.LoginDto;
 import com.prakriti.prakriti_connect.dto.UpdateDto;
 import com.prakriti.prakriti_connect.model.User;
+import com.prakriti.prakriti_connect.repositories.OrderRepo;
+import com.prakriti.prakriti_connect.repositories.ProductRepo;
 import com.prakriti.prakriti_connect.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +16,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     @Autowired
     private UserRepo userRepo;
+
+    @Autowired
+    OrderRepo orderRepo;
+
+    @Autowired
+    ProductRepo productRepo;
 
     @PostMapping("/register")
     public String register(@RequestBody User user) {
@@ -96,5 +105,33 @@ public class UserController {
 //        historyRepo.save(h1);
         userRepo.save(user);
         return "Profile Update Done Successfully";
+    }
+
+    @GetMapping("/admin/get-details/{adminId}")
+    public DisplayDto getAdminDetails(@PathVariable int adminId) {
+
+        User admin = userRepo.findById(adminId)
+                .orElseThrow(() -> new RuntimeException("Admin not found"));
+
+        DisplayDto dto = new DisplayDto();
+
+        dto.setId(admin.getId());
+        dto.setName(admin.getName());
+        dto.setUsername(admin.getUsername());
+
+        return dto;
+    }
+
+    @GetMapping("/admin/dashboard")
+    public AdminDto getDashboardStats() {
+
+        AdminDto dto = new AdminDto();
+
+        dto.setTotalUsers(userRepo.count());
+        dto.setTotalOrders(orderRepo.count());
+        dto.setTotalProducts(productRepo.count());
+        dto.setTotalEarnings(orderRepo.getTotalEarnings());
+
+        return dto;
     }
 }
