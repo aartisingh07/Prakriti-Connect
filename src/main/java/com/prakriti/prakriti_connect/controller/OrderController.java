@@ -49,8 +49,7 @@ public class OrderController {
         order.setOrderDate(LocalDateTime.now());
         order.setDeliveryDate(LocalDateTime.now().plusDays(5));
 
-        // ⭐ SET TOTAL AMOUNT
-        order.setTotalAmount(product.getPrice());
+        order.setTotalAmount(product.getPrice() + 10);
 
         Order savedOrder = orderRepo.save(order);
 

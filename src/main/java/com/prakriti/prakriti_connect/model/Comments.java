@@ -1,9 +1,6 @@
 package com.prakriti.prakriti_connect.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,17 +9,24 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
+@Table
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Transaction {
+@AllArgsConstructor
+public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    int orderId;
-    double amount;
-    String paymentMode;
+
+    @Column(nullable = false)
+    int newsId;
+
+    @Column(nullable = false)
+    int userId;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    String commentText;
 
     @CreationTimestamp
-    LocalDateTime transactionDate;
+    LocalDateTime commentDate;
 }

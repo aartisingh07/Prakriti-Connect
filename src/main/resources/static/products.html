@@ -120,8 +120,37 @@
 
 <div class="products-container" id="productsContainer"></div>
 
+<!-- ORDER POPUP MODAL -->
+<div id="orderModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:2000;">
+  <div style="
+      background:#fff;
+      width:360px;
+      margin:120px auto;
+      padding:24px;
+      border-radius:12px;
+      text-align:center;
+      box-shadow:0 10px 25px rgba(0,0,0,0.25);
+  ">
+    <h3 style="color:#065f46;">Order Summary</h3>
+
+    <p>Product Price: ₹<span id="productCost"></span></p>
+    <p>Platform Fee: ₹10</p>
+    <hr>
+    <h3>Total: ₹<span id="totalCost"></span></h3>
+
+    <button class="btn" onclick="payNow()">Pay Now</button>
+    <br><br>
+    <button onclick="closeModal()" style="background:none;border:none;color:red;cursor:pointer;">
+      Cancel
+    </button>
+  </div>
+</div>
+
 <script>
   const productsContainer = document.getElementById("productsContainer");
+
+  let selectedProductId = null;
+  let selectedPrice = 0;
 
   fetch("http://localhost:9091/products")
           .then(res => res.json())
@@ -138,11 +167,10 @@
           <img src="/images/${product.imageName}" class="product-img">
           <div class="product-name">${product.productName}</div>
           <div class="product-price">₹${product.price}</div>
-
           ${
                       isOut
                               ? `<div class="out-of-stock-label">OUT OF STOCK</div>`
-                              : `<button class="btn" onclick="orderProduct(${product.id}, ${product.price})">Order Now</button>`
+                              : `<button class="btn" onclick="openOrderPopup(${product.id}, ${product.price})">Order Now</button>`
               }
         `;
 
@@ -150,10 +178,49 @@
             });
           });
 
-  function orderProduct(id, price) {
-    alert("Proceed to order product ID: " + id);
+  /* 🔹 OPEN MODAL */
+  function openOrderPopup(productId, price) {
+    selectedProductId = productId;
+    selectedPrice = price;
+
+    document.getElementById("productCost").innerText = price;
+    document.getElementById("totalCost").innerText = price + 10;
+
+    document.getElementById("orderModal").style.display = "block";
+  }
+
+  function closeModal() {
+    document.getElementById("orderModal").style.display = "none";
+  }
+
+  /* 🔹 PAY NOW */
+  function payNow() {
+    const orderData = {
+      userId: 1,  // ⚠️ replace with logged-in user later
+      productId: selectedProductId,
+      name: "Aarti Singh",
+      phone: "9372090945",
+      address: "Dombivli East",
+      city: "Mumbai",
+      pincode: 421201
+    };
+
+    fetch("http://localhost:9091/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderData)
+    })
+            .then(res => res.json())
+            .then(() => {
+              closeModal();
+              alert("✅ Order placed successfully!\n📦 Delivery within 5 days.");
+            })
+            .catch(() => {
+              alert("❌ Payment failed. Please try again.");
+            });
   }
 </script>
+
 
 </body>
 </html>
