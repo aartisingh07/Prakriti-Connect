@@ -24,10 +24,6 @@ public class News {
     @Column(nullable = false, columnDefinition = "TEXT")
     String description;
 
-    // Optional image
-    @Column(name = "image_name")
-    String imageName;
-
     @CreationTimestamp
-    LocalDateTime createdAt;
+    LocalDateTime created_on;
 }

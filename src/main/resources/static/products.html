@@ -195,8 +195,15 @@
 
   /* 🔹 PAY NOW */
   function payNow() {
+    const userId = localStorage.getItem("userId");
+
+    if (!userId) {
+      alert("Please login again");
+      return;
+    }
+
     const orderData = {
-      userId: 1,  // ⚠️ replace with logged-in user later
+      userId: parseInt(userId),
       productId: selectedProductId,
       name: "Aarti Singh",
       phone: "9372090945",
@@ -219,6 +226,8 @@
               alert("❌ Payment failed. Please try again.");
             });
   }
+
+
 </script>
 
 
