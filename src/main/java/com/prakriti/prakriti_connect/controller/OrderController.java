@@ -1,13 +1,14 @@
 package com.prakriti.prakriti_connect.controller;
 
-import com.prakriti.prakriti_connect.dto.AdminDto;
 import com.prakriti.prakriti_connect.dto.AdminOrderDto;
 import com.prakriti.prakriti_connect.dto.OrderDto;
 import com.prakriti.prakriti_connect.model.Delivery;
+import com.prakriti.prakriti_connect.model.Notification;
 import com.prakriti.prakriti_connect.model.Order;
 import com.prakriti.prakriti_connect.model.Product;
 import com.prakriti.prakriti_connect.model.User;
 import com.prakriti.prakriti_connect.repositories.DeliveryRepo;
+import com.prakriti.prakriti_connect.repositories.NotificationRepo;
 import com.prakriti.prakriti_connect.repositories.OrderRepo;
 import com.prakriti.prakriti_connect.repositories.ProductRepo;
 import com.prakriti.prakriti_connect.repositories.UserRepo;
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 public class OrderController {
+
     @Autowired
     OrderRepo orderRepo;
 
@@ -33,6 +35,8 @@ public class OrderController {
     @Autowired
     UserRepo userRepo;
 
+    @Autowired
+    NotificationRepo notificationRepo;
 
     @PostMapping("/orders")
     public Order placeOrder(@RequestBody OrderDto orderDto) {
@@ -48,7 +52,6 @@ public class OrderController {
         order.setStatus("PLACED");
         order.setOrderDate(LocalDateTime.now());
         order.setDeliveryDate(LocalDateTime.now().plusDays(5));
-
         order.setTotalAmount(product.getPrice() + 10);
 
         Order savedOrder = orderRepo.save(order);
@@ -63,6 +66,15 @@ public class OrderController {
         delivery.setPincode(orderDto.getPincode());
 
         deliveryRepo.save(delivery);
+
+        // 🔔 CREATE NOTIFICATION FOR USER
+        Notification notification = new Notification();
+        notification.setUserId(orderDto.getUserId());
+        notification.setMessage("📦 Your order will be delivered in the next 5 days.");
+        notification.setType("ORDER");
+        notification.setRead(false);
+
+        notificationRepo.save(notification);
 
         return savedOrder;
     }
@@ -93,8 +105,6 @@ public class OrderController {
 
             list.add(dto);
         }
-
         return list;
     }
-
 }

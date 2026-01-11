@@ -236,20 +236,6 @@
       background: #f1f8e9;
     }
 
-    .recent-section {
-      margin-top: 50px;
-      background: rgba(255,255,255,0.85);
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
-    .section-title {
-      font-size: 20px;
-      color: #1b5e20;
-      margin-bottom: 16px;
-    }
-
     .modal-card input,
     .modal-card textarea {
       width: 100%;
@@ -314,16 +300,15 @@
     }
     /* ================= FOOTER ================= */
     .admin-footer {
-      margin-top: 60px;
-      padding: 20px 0;
+      margin-top: 80px;
+      padding: 24px 0;
       text-align: center;
 
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(2px);
+      background: rgba(255, 255, 255, 0.9); /* more solid */
+      backdrop-filter: blur(6px);
 
-      border-top: 1px solid #ddd;
+      border-top: 2px solid #c8e6c9;
     }
-
     .admin-footer p {
       margin: 6px 0;
       font-size: 14px;
@@ -345,6 +330,54 @@
     .admin-footer a:hover {
       text-decoration: underline;
     }
+    /* ================= OUT OF STOCK SECTION FIX ================= */
+    .recent-section {
+      margin-top: 50px;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1b5e20;
+      margin-bottom: 16px;
+    }
+    /* ================= NEWS ACTION BUTTONS ================= */
+    .news-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .edit-btn {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: none;
+      background: #fff3cd;
+      color: #856404;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .edit-btn:hover {
+      background: #ffe69c;
+    }
+
+    .delete-btn {
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: none;
+      background: #f8d7da;
+      color: #842029;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .delete-btn:hover {
+      background: #f1aeb5;
+    }
 
   </style>
 </head>
@@ -360,6 +393,7 @@
     <button class="admin-btn add-product-btn" onclick="openAddProduct()">➕ Add Product</button>
     <button class="admin-btn orders-btn" onclick="openProducts()">📦 Manage Products</button>
     <button class="admin-btn orders-btn" onclick="openOrders()">📦 View Orders</button>
+    <button class="admin-btn orders-btn" onclick="openNews()">📰 Manage News</button>
     <button class="admin-btn logout-btn" onclick="logoutAdmin()">🚪 Logout</button>
   </div>
 </div>
@@ -396,25 +430,7 @@
     </div>
   </div>
 
-  <!-- ================= RECENT ORDERS ================= -->
-  <div class="recent-section">
-    <h3 class="section-title">🕒 Recent Orders</h3>
 
-    <table class="orders-table">
-      <thead>
-      <tr>
-        <th>Order ID</th>
-        <th>User</th>
-        <th>Product</th>
-        <th>Amount</th>
-        <th>Status</th>
-      </tr>
-      </thead>
-      <tbody id="recentOrdersBody">
-      <tr><td colspan="5">Loading...</td></tr>
-      </tbody>
-    </table>
-  </div>
   <!-- ================= OUT OF STOCK PRODUCTS ================= -->
   <div class="recent-section">
     <h3 class="section-title">🚨 Out of Stock Products</h3>
@@ -505,6 +521,56 @@
 
   </div>
 </div>
+<!-- ================= MANAGE NEWS POPUP ================= -->
+<div class="modal-overlay" id="newsModal">
+  <div class="modal-card">
+
+    <div class="modal-header">
+      <h3>📰 Manage News</h3>
+      <button class="close-btn" onclick="closeNews()">✖</button>
+    </div>
+
+    <!-- Add News Button -->
+    <button class="admin-btn add-product-btn" style="margin-bottom: 16px;" onclick="openAddNews()">
+      ➕ Add News
+    </button>
+
+    <!-- News List (ONLY TITLES) -->
+    <table class="orders-table">
+      <thead>
+      <tr>
+        <th>Title</th>
+        <th style="width: 160px;">Actions</th>
+      </tr>
+      </thead>
+      <tbody id="newsTableBody">
+      <tr>
+        <td colspan="2">No news added yet</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<!-- ================= ADD / EDIT NEWS POPUP ================= -->
+<div class="modal-overlay" id="addNewsModal">
+  <div class="modal-card" style="max-width: 600px;">
+
+    <div class="modal-header">
+      <h3 id="newsModalTitle">➕ Add News</h3>
+      <button class="close-btn" onclick="closeAddNews()">✖</button>
+    </div>
+
+    <input id="newsTitle" placeholder="News Title" />
+    <textarea id="newsDescription" placeholder="News Description"></textarea>
+
+    <button class="admin-btn add-product-btn" onclick="saveNews()">
+      Save News
+    </button>
+
+  </div>
+</div>
+
 <!-- ================= FOOTER ================= -->
 <div class="admin-footer">
   <p>🌿 Prakriti Connect – Admin Dashboard</p>
@@ -521,6 +587,7 @@
 </div>
 
 <script>
+  let editingNewsId = null;
   function logoutAdmin() {
     localStorage.clear();
     window.location.href = "login.html";
@@ -651,34 +718,70 @@
               openProducts();
             });
   }
-    fetch("http://localhost:9091/admin/orders")
-    .then(res => res.json())
-    .then(data => {
-    const tbody = document.getElementById("recentOrdersBody");
-    tbody.innerHTML = "";
+  function openNews() {
+    document.getElementById("newsModal").style.display = "flex";
+    loadNews();
+  }
 
-    data.slice(0, 5).forEach(o => {
-    tbody.innerHTML += `
-        <tr>
-          <td>${o.orderId}</td>
-          <td>${o.username}</td>
-          <td>${o.productName}</td>
-          <td>₹${o.totalAmount}</td>
-          <td>
-            <span style="
-              padding:4px 10px;
-              border-radius:12px;
-              font-weight:600;
-              color:white;
-              background:${o.status === 'PLACED' ? '#f9a825' : '#2e7d32'};
-            ">
-              ${o.status}
-            </span>
-          </td>
-        </tr>
-      `;
-  });
-  });
+  function closeNews() {
+    document.getElementById("newsModal").style.display = "none";
+  }
+
+  function openAddNews() {
+    editingNewsId = null;
+
+    document.getElementById("newsTitle").value = "";
+    document.getElementById("newsDescription").value = "";
+    document.getElementById("newsModalTitle").innerText = "➕ Add News";
+
+    document.getElementById("addNewsModal").style.display = "flex";
+  }
+
+  function closeAddNews() {
+    editingNewsId = null;
+    document.getElementById("addNewsModal").style.display = "none";
+  }
+
+  function saveNews() {
+    const news = {
+      title: document.getElementById("newsTitle").value,
+      description: document.getElementById("newsDescription").value
+    };
+
+    if (!news.title || !news.description) {
+      alert("Title and description are required");
+      return;
+    }
+
+    // 🟢 EDIT MODE
+    if (editingNewsId !== null) {
+      fetch(`http://localhost:9091/news/${editingNewsId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(news)
+      })
+              .then(() => {
+                closeAddNews();
+                loadNews();
+              })
+              .catch(() => alert("Failed to update news"));
+    }
+    // 🟢 ADD MODE
+    else {
+      fetch("http://localhost:9091/news", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(news)
+      })
+              .then(res => res.text())
+              .then(msg => {
+                alert(msg);
+                closeAddNews();
+                loadNews();
+              })
+              .catch(() => alert("Failed to add news"));
+    }
+  }
 
   fetch("http://localhost:9091/products")
           .then(res => res.json())
@@ -689,7 +792,13 @@
             const outOfStock = products.filter(p => !p.available);
 
             if (outOfStock.length === 0) {
-              tbody.innerHTML = `<tr><td colspan="4">🎉 All products are available</td></tr>`;
+              tbody.innerHTML = `
+  <tr>
+    <td colspan="4" style="padding:20px; color:#2e7d32; font-weight:600;">
+      🎉 All products are available
+    </td>
+  </tr>
+`;
               return;
             }
 
@@ -704,7 +813,80 @@
       `;
             });
           });
+  function loadNews() {
+    fetch("http://localhost:9091/news")
+            .then(res => res.json())
+            .then(newsList => {
+              const tbody = document.getElementById("newsTableBody");
+              tbody.innerHTML = "";
 
+              if (newsList.length === 0) {
+                tbody.innerHTML = `
+          <tr>
+            <td colspan="2" style="padding:16px; color:#777;">
+              No news available
+            </td>
+          </tr>
+        `;
+                return;
+              }
+
+              newsList.forEach(news => {
+                tbody.innerHTML += `
+          <tr>
+            <td style="text-align:left; font-weight:600;">
+              ${news.title}
+            </td>
+            <td>
+              <div class="news-actions">
+                <button class="edit-btn" onclick="editNews(${news.id})">
+                  ✏ Edit
+                </button>
+                <button class="delete-btn" onclick="deleteNews(${news.id})">
+                  🗑 Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+              });
+            })
+            .catch(() => {
+              alert("Failed to load news");
+            });
+  }
+  function editNews(id) {
+    editingNewsId = id;
+
+    fetch(`http://localhost:9091/news/${id}`)
+            .then(res => res.json())
+            .then(news => {
+              document.getElementById("newsTitle").value = news.title;
+              document.getElementById("newsDescription").value = news.description;
+
+              document.getElementById("newsModalTitle").innerText = "✏ Edit News";
+
+              document.getElementById("addNewsModal").style.display = "flex";
+            })
+            .catch(() => {
+              alert("Failed to load news details");
+            });
+  }
+
+  function deleteNews(id) {
+    if (!confirm("Are you sure you want to delete this news?")) return;
+
+    fetch(`http://localhost:9091/news/${id}`, {
+      method: "DELETE"
+    })
+            .then(() => {
+              alert("News deleted successfully");
+              loadNews(); // refresh list
+            })
+            .catch(() => {
+              alert("Failed to delete news");
+            });
+  }
 </script>
 
 </body>

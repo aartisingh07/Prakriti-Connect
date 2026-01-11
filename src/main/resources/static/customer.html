@@ -225,6 +225,47 @@
             outline: none;
             border-color: #2e7d32;
         }
+        /* ================= NOTIFICATIONS ================= */
+        .notification-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .notification-item.unread {
+            background: #e8f5e9;
+            font-weight: 600;
+        }
+
+        .notification-item span {
+            display: block;
+            font-size: 12px;
+            color: #555;
+            margin-top: 4px;
+        }
+        /* ================= NOTIFICATION BADGE ================= */
+        .notif-badge {
+            position: absolute;
+            top: -4px;
+            right: -6px;
+
+            background: #d32f2f;
+            color: white;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            padding: 2px 6px;
+            border-radius: 999px;
+
+            display: none; /* hidden by default */
+        }
+        /* menu notification badge fix */
+        #menuNotifBadge {
+            position: static;
+            margin-left: auto;
+        }
 
         /* actions */
         .popup-actions {
@@ -524,7 +565,7 @@
     <!-- LEFT -->
     <div class="header-left">
         <a href="customer.html" class="brand">
-            Prakriti Connect
+            🌿 Prakriti Connect
         </a>
     </div>
 
@@ -536,7 +577,7 @@
     <!-- RIGHT -->
     <div class="header-right">
         <input type="checkbox" id="menu-toggle">
-        <label for="menu-toggle" class="menu-icon">&#9776;</label>
+        <label for="menu-toggle" class="menu-icon" style="position:relative;">&#9776;<span id="notifBadge" class="notif-badge">0</span></label>
 
         <nav class="dropdown-menu">
 
@@ -552,7 +593,7 @@
             <a href="#update-profile"><span class="dot"></span>Update Profile</a>
             <a href="news.html"><span class="dot"></span>News</a>
             <a href="#" onclick="redirectToProducts()"><span class="dot"></span>Products</a>
-            <a href="#notifications"><span class="dot"></span>Notifications</a>
+            <a role="button" onclick="openNotifications()" style="position:relative;"><span class="dot"></span>Notifications<span id="menuNotifBadge" class="notif-badge" style="position:static; margin-left:auto;"></span></a>
             <a role="button" onclick="openMyOrders()"><span class="dot"></span>My Orders</a>
 
             <a href="login.html" class="logout">
@@ -606,6 +647,21 @@
         </div>
     </div>
 </div>
+<!-- ================= NOTIFICATIONS POPUP ================= -->
+<div class="popup-overlay" id="notifications-popup">
+    <div class="popup-card" style="width:500px; max-height:80vh; overflow-y:auto;">
+        <h2>🔔 My Notifications</h2>
+
+        <div id="notificationsList">
+            <p>Loading notifications...</p>
+        </div>
+
+        <div class="popup-actions">
+            <a href="#" class="close-btn">Close</a>
+        </div>
+    </div>
+</div>
+
 <!-- ================= WELCOME SECTION ================= -->
 <section class="welcome-section">
     <div class="welcome-content">
@@ -703,6 +759,7 @@
 </footer>
 
 <script>
+    let notifications = [];
     // ================= LOAD USER DETAILS FOR MENU =================
     const userId = localStorage.getItem("userId");
 
@@ -857,6 +914,73 @@
             .catch(() => {
                 document.getElementById("total-orders").innerText = "-";
             });
+    }
+    function openNotifications() {
+
+        // close menu
+        document.getElementById("menu-toggle").checked = false;
+
+        // open popup
+        window.location.hash = "notifications-popup";
+
+        const list = document.getElementById("notificationsList");
+        list.innerHTML = "<p>Loading notifications...</p>";
+
+        fetch(`http://localhost:9091/users/${userId}/notifications`)
+            .then(res => res.json())
+            .then(data => {
+                notifications = data;
+                list.innerHTML = "";
+
+                if (notifications.length === 0) {
+                    list.innerHTML = "<p>No notifications yet 🌱</p>";
+                    return;
+                }
+
+                notifications.forEach(n => {
+                    const div = document.createElement("div");
+                    div.className = "notification-item " + (!n.read ? "unread" : "");
+
+                    div.innerHTML = `
+                    ${n.message}
+                    <span>${n.createdAt.replace("T", " ")}</span>
+                `;
+
+                    list.appendChild(div);
+                });
+
+                // mark all as read
+                fetch(`http://localhost:9091/users/${userId}/notifications/read`, {
+                    method: "PUT"
+                }).then(() => updateNotificationBadge());
+            });
+    }
+    function updateNotificationBadge() {
+        fetch(`http://localhost:9091/users/${userId}/notifications/unread-count`)
+            .then(res => res.text())
+            .then(count => {
+                const headerBadge = document.getElementById("notifBadge");
+                const menuBadge = document.getElementById("menuNotifBadge");
+
+                if (count > 0) {
+                    // header badge
+                    headerBadge.innerText = count;
+                    headerBadge.style.display = "inline-block";
+
+                    // menu badge
+                    menuBadge.innerText = count;
+                    menuBadge.style.display = "inline-block";
+                } else {
+                    headerBadge.style.display = "none";
+                    menuBadge.style.display = "none";
+                }
+            });
+    }
+    function loadNotifications() {
+        updateNotificationBadge();
+    }
+    if (userId) {
+        loadNotifications();
     }
 
 </script>

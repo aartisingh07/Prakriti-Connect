@@ -4,18 +4,22 @@ import com.prakriti.prakriti_connect.dto.AdminDto;
 import com.prakriti.prakriti_connect.dto.DisplayDto;
 import com.prakriti.prakriti_connect.dto.LoginDto;
 import com.prakriti.prakriti_connect.dto.UpdateDto;
+import com.prakriti.prakriti_connect.model.Notification;
 import com.prakriti.prakriti_connect.model.User;
+import com.prakriti.prakriti_connect.repositories.NotificationRepo;
 import com.prakriti.prakriti_connect.repositories.OrderRepo;
 import com.prakriti.prakriti_connect.repositories.ProductRepo;
 import com.prakriti.prakriti_connect.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
-    private UserRepo userRepo;
+    UserRepo userRepo;
 
     @Autowired
     OrderRepo orderRepo;
@@ -23,21 +27,15 @@ public class UserController {
     @Autowired
     ProductRepo productRepo;
 
+    @Autowired
+    NotificationRepo notificationRepo;
+
     @PostMapping("/register")
     public String register(@RequestBody User user) {
-//        if (adminRepo.existsByUsername(user.getUsername())) {
-//            return "REGISTERED SUCCESSFULLY";
-    //}
-
         if (userRepo.existsByUsername(user.getUsername())) {
         return "ALREADY REGISTERED";
     }
         userRepo.save(user);
-
-//        History h1 = new History();
-//        h1.setDescription("User Self Created: "+user.getUsername());
-//        historyRepo.save(h1);
-
         return "Signup Successful";
 }
     @PostMapping("/login")
@@ -56,7 +54,6 @@ public class UserController {
         if (!u.getRole().equalsIgnoreCase(user.getRole())) {
             return "Invalid Role";
         }
-
         // ✅ return id and role
         return user.getId() + "," + user.getRole();
     }
@@ -77,32 +74,22 @@ public class UserController {
     public String update(@RequestBody UpdateDto obj){
         User user = userRepo.findById(obj.getId()).orElseThrow(()->new RuntimeException("Not Found"));
 
-//        History h1 = new History();
-
         if(obj.getKey().equalsIgnoreCase("name")){
             if(user.getName().equalsIgnoreCase(obj.getValue())) return "Cannot be same";
-
-//            h1.setDescription("User updated Name from: "+user.getName()+" to "+obj.getValue());
-
             user.setName(obj.getValue());
         }
         else if(obj.getKey().equalsIgnoreCase("password")){
-//            h1.setDescription("User "+user.getUsername()+" updated Password!");
-
             user.setPassword(obj.getValue());
         }
         else if(obj.getKey().equalsIgnoreCase("email")){
             User user2 = userRepo.findByEmail(obj.getValue());
             if(user2 != null) return "Email already exists";
 
-//            h1.setDescription("User updated Email from: "+user.getEmail()+" to "+obj.getValue());
-
             user.setEmail(obj.getValue());
         }
         else{
             return "Field update not supported";
         }
-//        historyRepo.save(h1);
         userRepo.save(user);
         return "Profile Update Done Successfully";
     }
@@ -133,5 +120,28 @@ public class UserController {
         dto.setTotalEarnings(orderRepo.getTotalEarnings());
 
         return dto;
+    }
+
+    @GetMapping("/users/{userId}/notifications")
+    public List<Notification> getUserNotifications(@PathVariable int userId) {
+        return notificationRepo.findUserNotifications(userId);
+    }
+
+    @GetMapping("/users/{userId}/notifications/unread-count")
+    public long getUnreadNotificationCount(@PathVariable int userId) {
+        return notificationRepo.countUnread(userId);
+    }
+
+    @PutMapping("/users/{userId}/notifications/read")
+    public void markNotificationsAsRead(@PathVariable int userId) {
+
+        List<Notification> notifications = notificationRepo.findUserNotifications(userId);
+
+        for (Notification n : notifications) {
+            if (!n.isRead()) {
+                n.setRead(true);
+            }
+        }
+        notificationRepo.saveAll(notifications);
     }
 }
