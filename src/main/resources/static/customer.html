@@ -592,7 +592,7 @@
 
             <a href="#update-profile"><span class="dot"></span>Update Profile</a>
             <a href="news.html"><span class="dot"></span>News</a>
-            <a href="#" onclick="redirectToProducts()"><span class="dot"></span>Products</a>
+            <a href="products.html" onclick="redirectToProducts()"><span class="dot"></span>Products</a>
             <a role="button" onclick="openNotifications()" style="position:relative;"><span class="dot"></span>Notifications<span id="menuNotifBadge" class="notif-badge" style="position:static; margin-left:auto;"></span></a>
             <a role="button" onclick="openMyOrders()"><span class="dot"></span>My Orders</a>
 
@@ -848,15 +848,7 @@
         msg.innerText = text;
         msg.style.color = color;
     }
-    function redirectToProducts() {
-        // show message
-        alert("Redirecting to products page...");
 
-        // redirect after 1 second
-        setTimeout(() => {
-            window.location.href = "products.html";
-        }, 1000);
-    }
 
     function openMyOrders() {
         const userId = localStorage.getItem("userId");
