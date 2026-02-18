@@ -4,162 +4,181 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prakriti Connect - Sign Up</title>
+
     <style>
+        /* ================= RESET ================= */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+        /* ================= VIDEO BACKGROUND ================= */
+        .bg-video {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -3;
+        }
+
+        /* Light overlay so video stays REAL */
+        .video-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.25); /* 🔥 darker, more realistic */
+            z-index: -2;
+        }
+
+        /* ================= BODY ================= */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
 
-            /* Dark overlay + background image */
-            background:
-                    linear-gradient(
-                            rgba(0, 0, 0, 0.45),
-                            rgba(0, 0, 0, 0.45)
-                    ),
-                    url("https://www.hdwallpapers.in/download/purple_flowers_green_grass_field_mountain_slope_under_blue_sky_4k_hd_nature-1920x1080.jpg");
-
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-
-            min-height: 50vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 450px;
-
-            /* TRUE glass effect */
-            background: rgba(255, 255, 255, 0.25);
-            /*backdrop-filter: blur(15px);*/
-            /*-webkit-backdrop-filter: blur(18px);*/
-
-            border-radius: 20px;
-
-            /* Glass border */
-            border: 1px solid rgba(255, 255, 255, 0.35);
-
-            /* Depth */
-            box-shadow:
-                    0 25px 50px rgba(0, 0, 0, 0.35),
-                    inset 0 1px 1px rgba(255, 255, 255, 0.3);
-
-            overflow: hidden;
-        }
-
-        .header {
-            background: rgba(255, 255, 255, 0.35);
-            /*backdrop-filter: blur(12px);*/
-            /*-webkit-backdrop-filter: blur(12px);*/
-
-            padding: 16px;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .header h1 {
-            font-size: 22px;
-            margin-bottom: 4px;
-            color: #2e7d32;
-        }
-
-        .header p {
-            font-size: 15px;
-            color: yellow;
+            flex-direction: column;   /* 🔑 vertical layout */
         }
 
 
-        /* Content section */
-        .content {
-            padding: 22px 35px;
-            background: transparent;
-        }
-
-        h2 {
-            color: white;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        /* Form fields */
-        .form-group {
-            margin-bottom: 20px; //
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            color: antiquewhite;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .form-group input {
-             width: 100%;
-             padding: 10px 14px;   /* reduced from 12px */
-             border: 2px solid #e0e0e0;
-             border-radius: 8px;
-             font-size: 14px;
-         }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #4caf50;
-            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.15);
-        }
-
-        /* Button */
-        .btn {
+        /* ================= HEADER (FIXED TOP) ================= */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            margin: 10px auto 0 auto;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            font-size: 14px;
-            cursor: pointer;
-            font-weight: 600;
-            background: linear-gradient(135deg, #2f6f6d, #4fa3a1);
+
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            align-items: center;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #137547, #054a29);
             color: white;
-            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+            z-index: 5;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(67, 160, 71, 0.4);
+        .brand {
+            font-size: 25px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
         }
 
-        /* Button full width */
-        .btn {
-            grid-column: span 2;
-        }
-
-        /* Links */
-        .link {
+        .header-center {
             text-align: center;
-            margin-top: 18px;
-            color: papayawhip;
-            font-size: 14px;
+            font-size: 20px;
+            opacity: 0.9;
         }
 
-        .link a {
-            color: cornflowerblue;
+        .header-right {
+            text-align: right;
+        }
+
+        .header-link {
+            color: #e8f5e9;
             text-decoration: none;
             font-weight: 600;
         }
 
-        .link a:hover {
+        /* ================= PAGE CONTENT ================= */
+        .page-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;   /* 🔑 KEY CHANGE */
+            padding-top: 120px;        /* header space */
+            padding-bottom: 60px;
+        }
+
+
+        /* ================= SIGNUP CARD (MATCH LOGIN THEME) ================= */
+        .container {
+            width: 90%;
+            max-width: 520px;
+            background-color: #5BBA6F;     /* 🔥 SAME AS LOGIN */
+            border-radius: 24px;
+            padding: 36px 40px;
+            box-shadow: 0 24px 55px rgba(0,0,0,0.35);
+        }
+
+        /* ================= FORM ================= */
+        h2 {
+            text-align: center;
+            color: #054a29;
+            margin-bottom: 24px;
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #0b2e1f;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: none;
+            font-size: 14px;
+            background: #ffffff;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(15, 61, 46, 0.35);
+        }
+
+        /* ================= BUTTON ================= */
+        .btn {
+            width: 100%;
+            margin-top: 18px;
+            padding: 13px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            background: linear-gradient(135deg, #137547, #054a29);
+            color: white;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(5, 74, 41, 0.45);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 6px 14px rgba(5, 74, 41, 0.35);
+        }
+
+        /* ================= LINKS ================= */
+        .link {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 14px;
+            color: #0f3d2e;
+        }
+
+        .link a {
+            color: #083b27;
+            font-weight: 600;
             text-decoration: underline;
             cursor: pointer;
         }
 
-        /* Message box */
+        /* ================= MESSAGE ================= */
         .message {
             padding: 12px;
             border-radius: 8px;
@@ -169,39 +188,85 @@
         }
 
         .message.success {
-            background: #e8f5e9;
-            color: #1b5e20;
-            border: 1px solid #c8e6c9;
+            background: #d4edda;
+            color: #155724;
         }
 
         .message.error {
-            background: #fdecea;
-            color: #b71c1c;
-            border: 1px solid #f5c6cb;
+            background: #f8d7da;
+            color: #721c24;
         }
 
         .message.show {
             display: block;
         }
 
-        /* Reduce form height using grid layout */
-        form {
-            display: flex;
-            flex-direction: column;
+        /* ================= FOOTER (FIXED BOTTOM) ================= */
+        .customer-footer {
+            margin-top: auto;                 /* 🔑 pushes footer to bottom */
+            padding: 22px 0;
+            text-align: center;
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(4px);
+            border-top: 1px solid #ddd;
         }
-            /*grid-template-columns: 1fr 1fr;*/
-        /*    gap: 10px 18px;   !* tighter gaps *!*/
-        /*}*/
+
+
+        .customer-footer p {
+            margin: 4px 0;
+            font-size: 14px;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .customer-footer span {
+            color: #555;
+            font-weight: 500;
+        }
+
+        .customer-footer a {
+            color: #065f46;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .customer-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ================= MOBILE ================= */
+        @media (max-width: 900px) {
+            .bg-video {
+                display: none;
+            }
+
+            .container {
+                margin: 0 16px;
+            }
+        }
     </style>
 </head>
-<body>
-<div class="container">
-    <div class="header">
-        <h1>🌱 Prakriti Connect</h1>
-        <p>"Create your account to stay connected with nature"</p>
-    </div>
 
-    <div class="content">
+<body>
+
+<!-- 🎥 Video Background -->
+<video class="bg-video" autoplay muted loop playsinline>
+    <source src="videos/clouds.mp4" type="video/mp4">
+</video>
+<div class="video-overlay"></div>
+
+<!-- HEADER -->
+<header class="main-header">
+    <a href="customer.html" class="brand">🌿 Prakriti Connect</a>
+    <div class="header-center">Create your account to stay connected with nature</div>
+    <div class="header-right">
+        <a href="customer.html" class="header-link">Home</a>
+    </div>
+</header>
+
+<!-- PAGE CONTENT -->
+<div class="page-wrapper">
+    <div class="container">
         <h2>Sign Up</h2>
 
         <div id="signupMessage" class="message"></div>
@@ -213,37 +278,31 @@
             </div>
 
             <div class="form-group">
-                <i class="fa fa-user"></i>
                 <label>Username</label>
                 <input type="text" id="signupUsername" required>
             </div>
 
             <div class="form-group">
-                <i class="fa fa-envelope"></i>
                 <label>Email</label>
                 <input type="email" id="signupEmail" required>
             </div>
 
             <div class="form-group">
-                <i class="fa fa-lock"></i>
                 <label>Password</label>
                 <input type="password" id="signupPassword" required>
             </div>
 
             <div class="form-group">
-                <i class="fa fa-map-marker-alt"></i>
                 <label>State</label>
                 <input type="text" id="signupState" required>
             </div>
 
             <div class="form-group">
-                <i class="fa fa-city"></i>
                 <label>City</label>
                 <input type="text" id="signupCity" required>
             </div>
 
             <div class="form-group">
-                <i class="fa fa-phone"></i>
                 <label>Phone</label>
                 <input type="text" id="signupPhone" required>
             </div>
@@ -261,13 +320,25 @@
         </form>
 
         <div class="link">
-            Already have an account? <a onclick="window.location.href='login.html'">Login</a>
+            Already have an account?
+            <a onclick="window.location.href='login.html'">Login</a>
         </div>
+
         <div class="link">
             <a onclick="window.location.href='home.html'">← Back to Home</a>
         </div>
     </div>
 </div>
+
+<!-- FOOTER -->
+<footer class="customer-footer">
+    <p>🌿 Prakriti Connect – Sign Up</p>
+    <p><span>Version 1.0</span> • <span>© 2026</span></p>
+    <p>
+        Built by <strong>Aarti Singh</strong> |
+        <a href="https://github.com/aartisingh07" target="_blank">GitHub</a>
+    </p>
+</footer>
 
 <script>
     const showMessage = (id, text, type) => {
