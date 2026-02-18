@@ -10,35 +10,37 @@
       padding: 0;
       box-sizing: border-box;
     }
+    html, body {
+      height: 100%;
+    }
 
     body {
       font-family: 'Segoe UI', Tahoma, sans-serif;
-      background: url("/images/background.jpg");
+      background: linear-gradient(
+        135deg,
+        #eaf2ff 0%,
+        #cfe3ff 40%,
+        #eef6ff 100%
+      );
     }
+
 
     /* ================= HEADER ================= */
     .admin-header {
-      width: 100%;
-      height: 80px;
-      background: linear-gradient(90deg, #1b5e20, #2e7d32);
-      color: white;
+  background: linear-gradient(90deg, #1e3a8a, #2563eb);
+  color: white;
 
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+  display: flex;
+  align-items: flex-end;          /* ⬅️ key change */
+  justify-content: space-between;
 
-      padding: 0 30px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-    }
+  padding: 26px 30px 18px;        /* ⬅️ top & bottom breathing space */
+}
+
 
     .admin-title {
       font-size: 24px;
       font-weight: 700;
-    }
-
-    .admin-actions {
-      display: flex;
-      gap: 14px;
     }
 
     .admin-btn {
@@ -58,35 +60,13 @@
 
     .add-product-btn {
       background: white;
-      color: #1b5e20;
+      color: #1e4fa3;
     }
 
     .add-product-btn:hover {
       background: #e8f5e9;
       transform: translateY(-2px);
       box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-    }
-
-    .orders-btn {
-      background: #c8e6c9;
-      color: #1b5e20;
-    }
-
-    .orders-btn:hover {
-      background: #b2dfdb;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-    }
-
-    .logout-btn {
-      background: #c62828;
-      color: white;
-    }
-
-    .logout-btn:hover {
-      background: #b71c1c;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 14px rgba(0,0,0,0.25);
     }
 
     .admin-btn:active {
@@ -96,18 +76,20 @@
 
     /* ================= MAIN CONTAINER ================= */
     .admin-container {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
+  padding: 40px 30px 30px;  /* ⬅️ extra top spacing */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
 
     /* ================= WELCOME SECTION ================= */
     .admin-welcome {
       display: inline-block;
-      margin: 30px 0 40px 40px;
+      margin: 30px 0 40px 0;
       padding: 18px 26px;
 
-      background: rgba(255, 255, 255, 0.65);
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid #dbeafe;
       backdrop-filter: blur(1px);
 
       border-radius: 14px;
@@ -117,13 +99,13 @@
     .admin-welcome h2 {
       margin: 0;
       font-size: 26px;
-      color: darkgreen;
+      color: #1e4fa3;
     }
 
     .admin-welcome p {
       margin-top: 6px;
       font-size: 14px;
-      color: #2e7d32;
+      color: #2563eb;
       font-weight: 600;
     }
 
@@ -139,7 +121,7 @@
       padding: 26px 20px;
       border-radius: 14px;
       text-align: center;
-
+      border: 1px solid #dbeafe;
       box-shadow: 0 8px 20px rgba(0,0,0,0.15);
       transition: transform 0.25s ease;
     }
@@ -150,7 +132,7 @@
 
     .stat-box h3 {
       font-size: 28px;
-      color: #2e7d32;
+      color: #1e4fa3;
       margin-bottom: 6px;
     }
 
@@ -228,8 +210,8 @@
     }
 
     .orders-table th {
-      background: #e8f5e9;
-      color: #1b5e20;
+      background: #eaf2ff;
+      color: #1e4fa3;
     }
 
     .orders-table tr:hover {
@@ -300,19 +282,17 @@
     }
     /* ================= FOOTER ================= */
     .admin-footer {
-      margin-top: 80px;
       padding: 24px 0;
       text-align: center;
 
-      background: rgba(255, 255, 255, 0.9); /* more solid */
+      background: linear-gradient(90deg, #eaf2ff, #f5faff);
+      border-top: 1px solid #dbeafe;
       backdrop-filter: blur(6px);
-
-      border-top: 2px solid #c8e6c9;
     }
     .admin-footer p {
       margin: 6px 0;
       font-size: 14px;
-      color: #2e7d32;
+      color: #1e4fa3;
       font-weight: 600;
     }
 
@@ -333,7 +313,8 @@
     /* ================= OUT OF STOCK SECTION FIX ================= */
     .recent-section {
       margin-top: 50px;
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255,255,255,0.9);
+      border: 1px solid #dbeafe;
       padding: 24px;
       border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -341,7 +322,7 @@
     .section-title {
       font-size: 20px;
       font-weight: 700;
-      color: #1b5e20;
+      color: #1e4fa3;
       margin-bottom: 16px;
     }
     /* ================= NEWS ACTION BUTTONS ================= */
@@ -378,104 +359,279 @@
     .delete-btn:hover {
       background: #f1aeb5;
     }
+.admin-layout {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+.admin-sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #1e3a8a, #2563eb);
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 20px 16px;
+}
+.sidebar-brand {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-align: center;
+}
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sidebar-link {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.sidebar-link:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateX(4px);
+}
+.sidebar-link.active {
+  background: rgba(255,255,255,0.25);
+  box-shadow: inset 4px 0 0 #ffffff;
+}
+.sidebar-link.logout {
+  background: rgba(198,40,40,0.9);
+}
+
+.sidebar-link.logout:hover {
+  background: #b71c1c;
+}
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: rgba(255,255,255,0.15);
+}
+.admin-container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.admin-footer {
+  margin-top: auto;
+}
+.sidebar-divider {
+  height: 1px;
+  background: rgba(255,255,255,0.25);
+  margin: 16px 8px;
+  border-radius: 1px;
+}
+    /* ================= CHARTS LAYOUT ================= */
+.charts-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* line chart bigger, donut smaller */
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.chart-card {
+  background: rgba(255,255,255,0.9);
+  border: 1px solid #dbeafe;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* Smaller donut chart */
+.chart-card.donut {
+  max-width: 420px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card.donut {
+    max-width: 100%;
+  }
+}
 
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-<!-- ================= HEADER ================= -->
-<div class="admin-header">
-  <div class="admin-title">
-    🌿 Prakriti Connect – Admin Panel
-  </div>
+<div class="admin-layout">
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="admin-sidebar">
 
-  <div class="admin-actions">
-    <button class="admin-btn add-product-btn" onclick="openAddProduct()">➕ Add Product</button>
-    <button class="admin-btn orders-btn" onclick="openProducts()">📦 Manage Products</button>
-    <button class="admin-btn orders-btn" onclick="openOrders()">📦 View Orders</button>
-    <button class="admin-btn orders-btn" onclick="openNews()">📰 Manage News</button>
-    <button class="admin-btn logout-btn" onclick="logoutAdmin()">🚪 Logout</button>
-  </div>
-</div>
-
-<!-- ================= CONTENT ================= -->
-<div class="admin-container">
-
-  <!-- WELCOME -->
-  <div class="admin-welcome">
-    <h2 id="adminName">Welcome, Admin</h2>
-    <p id="adminUsername">@admin</p>
-  </div>
-
-  <!-- STATS -->
-  <div class="stats-grid">
-    <div class="stat-box">
-      <h3 id="totalUsers">0</h3>
-      <span>Total Users</span>
+    <div class="sidebar-brand">
+      🌿 Prakriti Connect
+      <div style="font-size:12px; opacity:0.8; margin-top:4px;">
+        Admin Panel
+      </div>
     </div>
 
-    <div class="stat-box">
-      <h3 id="totalOrders">0</h3>
-      <span>Total Orders Received</span>
+    <nav class="sidebar-nav">
+      <button class="sidebar-link active" id="nav-home" onclick="goHome()">
+        🏠 Home
+      </button>
+      <div class="sidebar-divider"></div>
+      <button class="sidebar-link" id="nav-add" onclick="openAddProduct()">
+        ➕ Add Product
+      </button>
+      <div class="sidebar-divider"></div>
+      <button class="sidebar-link" id="nav-products" onclick="openProducts()">
+        📦 Manage Products
+      </button>
+      <div class="sidebar-divider"></div>
+      <button class="sidebar-link" id="nav-orders" onclick="openOrders()">
+        📦 View Orders
+      </button>
+      <div class="sidebar-divider"></div>
+      <button class="sidebar-link" id="nav-news" onclick="openNews()">
+        📰 Manage News
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="sidebar-link logout" onclick="logoutAdmin()">
+        🚪 Logout
+      </button>
     </div>
 
-    <div class="stat-box">
-      <h3 id="totalProducts">0</h3>
-      <span>Total Products</span>
+  </aside>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <div class="admin-main">
+
+    <!-- ================= HEADER ================= -->
+    <div class="admin-header">
+      <div class="admin-title">Dashboard</div>
     </div>
 
-    <div class="stat-box">
-      <h3 id="totalEarnings">₹0</h3>
-      <span>Total Earned</span>
-    </div>
-  </div>
+    <!-- ================= CONTENT ================= -->
+    <div class="admin-container">
 
-
-  <!-- ================= OUT OF STOCK PRODUCTS ================= -->
-  <div class="recent-section">
-    <h3 class="section-title">🚨 Out of Stock Products</h3>
-
-    <table class="orders-table">
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Product Name</th>
-        <th>Price</th>
-        <th>Status</th>
-      </tr>
-      </thead>
-      <tbody id="outOfStockBody">
-      <tr><td colspan="4">Loading...</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- ================= ORDERS POPUP ================= -->
-  <div class="modal-overlay" id="ordersModal">
-    <div class="modal-card">
-
-      <div class="modal-header">
-        <h3>📦 All Orders</h3>
-        <button class="close-btn" onclick="closeOrders()">✖</button>
+      <!-- WELCOME -->
+      <div class="admin-welcome">
+        <h2 id="adminName">Welcome, Admin</h2>
+        <p id="adminUsername">@admin</p>
       </div>
 
-      <table class="orders-table">
-        <thead>
-        <tr>
-          <th>ID</th>
-          <th>User</th>
-          <th>Product</th>
-          <th>Amount</th>
-          <th>Status</th>
-          <th>Order Date</th>
-        </tr>
-        </thead>
-        <tbody id="ordersTableBody"></tbody>
-      </table>
+      <!-- STATS -->
+      <div class="stats-grid">
+        <div class="stat-box">
+          <h3 id="totalUsers">0</h3>
+          <span>Total Users</span>
+        </div>
+
+        <div class="stat-box">
+          <h3 id="totalOrders">0</h3>
+          <span>Total Orders Received</span>
+        </div>
+
+        <div class="stat-box">
+          <h3 id="totalProducts">0</h3>
+          <span>Total Products</span>
+        </div>
+
+        <div class="stat-box">
+          <h3 id="totalEarnings">₹0</h3>
+          <span>Total Earned</span>
+        </div>
+      </div>
+      <!-- ================= CHARTS SECTION ================= -->
+      <div class="charts-grid">
+
+        <!-- ORDERS OVER TIME -->
+        <div class="chart-card">
+          <h3 class="section-title">📈 Orders Over Time</h3>
+          <canvas id="ordersChart" height="120"></canvas>
+        </div>
+
+        <!-- PRODUCT AVAILABILITY -->
+        <div class="chart-card donut">
+          <h3 class="section-title">📦 Product Availability</h3>
+          <canvas id="productsChart" height="160"></canvas>
+        </div>
+
+      </div>
+
+      <!-- ================= OUT OF STOCK PRODUCTS ================= -->
+      <div class="recent-section">
+        <h3 class="section-title">🚨 Out of Stock Products</h3>
+
+        <table class="orders-table">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Status</th>
+          </tr>
+          </thead>
+          <tbody id="outOfStockBody">
+          <tr><td colspan="4">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ================= ORDERS POPUP ================= -->
+      <div class="modal-overlay" id="ordersModal">
+        <div class="modal-card">
+
+          <div class="modal-header">
+            <h3>📦 All Orders</h3>
+            <button class="close-btn" onclick="closeOrders()">✖</button>
+          </div>
+
+          <table class="orders-table">
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>User</th>
+              <th>Product</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Order Date</th>
+            </tr>
+            </thead>
+            <tbody id="ordersTableBody"></tbody>
+          </table>
+
+        </div>
+      </div>
 
     </div>
-  </div>
 
+    <!-- ================= FOOTER ================= -->
+    <div class="admin-footer">
+      <p>🌿 Prakriti Connect – Admin Dashboard</p>
+      <p>
+        <span>Version 1.0</span> •
+        <span>© 2026</span>
+      </p>
+      <p>
+        Built by <strong>Aarti Singh</strong> |
+        <a href="https://github.com/aartisingh07" target="_blank">
+          GitHub
+        </a>
+      </p>
+    </div>
+
+  </div>
 </div>
 
 <!-- ================= PRODUCTS POPUP ================= -->
@@ -521,6 +677,7 @@
 
   </div>
 </div>
+
 <!-- ================= MANAGE NEWS POPUP ================= -->
 <div class="modal-overlay" id="newsModal">
   <div class="modal-card">
@@ -530,12 +687,10 @@
       <button class="close-btn" onclick="closeNews()">✖</button>
     </div>
 
-    <!-- Add News Button -->
     <button class="admin-btn add-product-btn" style="margin-bottom: 16px;" onclick="openAddNews()">
       ➕ Add News
     </button>
 
-    <!-- News List (ONLY TITLES) -->
     <table class="orders-table">
       <thead>
       <tr>
@@ -552,6 +707,7 @@
 
   </div>
 </div>
+
 <!-- ================= ADD / EDIT NEWS POPUP ================= -->
 <div class="modal-overlay" id="addNewsModal">
   <div class="modal-card" style="max-width: 600px;">
@@ -571,22 +727,15 @@
   </div>
 </div>
 
-<!-- ================= FOOTER ================= -->
-<div class="admin-footer">
-  <p>🌿 Prakriti Connect – Admin Dashboard</p>
-  <p>
-    <span>Version 1.0</span> •
-    <span>© 2026</span>
-  </p>
-  <p>
-    Built by <strong>Aarti Singh</strong> |
-    <a href="https://github.com/aartisingh07" target="_blank">
-      GitHub
-    </a>
-  </p>
-</div>
-
 <script>
+  function setActiveSidebar(activeId) {
+  const links = document.querySelectorAll(".sidebar-link");
+  links.forEach(link => link.classList.remove("active"));
+
+  const activeLink = document.getElementById(activeId);
+  if (activeLink) activeLink.classList.add("active");
+}
+
   let editingNewsId = null;
   function logoutAdmin() {
     localStorage.clear();
@@ -623,6 +772,7 @@
             document.getElementById("totalEarnings").innerText = "₹" + data.totalEarnings;
           });
   function openOrders() {
+  setActiveSidebar("nav-orders");
     document.getElementById("ordersModal").style.display = "flex";
 
     fetch("http://localhost:9091/admin/orders")
@@ -648,13 +798,17 @@
 
   function closeOrders() {
     document.getElementById("ordersModal").style.display = "none";
+    setActiveSidebar("nav-home");
   }
   function openAddProduct() {
-    document.getElementById("addProductModal").style.display = "flex";
-  }
+  setActiveSidebar("nav-add");
+  document.getElementById("addProductModal").style.display = "flex";
+}
+
 
   function closeAddProduct() {
     document.getElementById("addProductModal").style.display = "none";
+    setActiveSidebar("nav-home");
   }
 
   function saveProduct() {
@@ -677,6 +831,7 @@
             .catch(() => alert("Failed to add product"));
   }
   function openProducts() {
+    setActiveSidebar("nav-products");
     document.getElementById("productsModal").style.display = "flex";
 
     fetch("http://localhost:9091/products")
@@ -707,6 +862,7 @@
 
   function closeProducts() {
     document.getElementById("productsModal").style.display = "none";
+    setActiveSidebar("nav-home");
   }
 
   function toggleProduct(id) {
@@ -719,12 +875,14 @@
             });
   }
   function openNews() {
-    document.getElementById("newsModal").style.display = "flex";
-    loadNews();
+    setActiveSidebar("nav-news");
+  document.getElementById("newsModal").style.display = "flex";
+  loadNews();
   }
 
   function closeNews() {
     document.getElementById("newsModal").style.display = "none";
+    setActiveSidebar("nav-home");
   }
 
   function openAddNews() {
@@ -740,6 +898,7 @@
   function closeAddNews() {
     editingNewsId = null;
     document.getElementById("addNewsModal").style.display = "none";
+    setActiveSidebar("nav-home");
   }
 
   function saveNews() {
@@ -887,6 +1046,79 @@
               alert("Failed to delete news");
             });
   }
+  function goHome() {
+  setActiveSidebar("nav-home");
+}
+  /* ================= ORDERS OVER TIME (LINE CHART) ================= */
+fetch("http://localhost:9091/admin/orders")
+  .then(res => res.json())
+  .then(orders => {
+
+    // Group orders by date
+    const ordersByDate = {};
+
+    orders.forEach(order => {
+      const date = order.orderDate.split("T")[0];
+      ordersByDate[date] = (ordersByDate[date] || 0) + 1;
+    });
+
+    const labels = Object.keys(ordersByDate);
+    const data = Object.values(ordersByDate);
+
+    new Chart(document.getElementById("ordersChart"), {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Orders",
+          data: data,
+          borderWidth: 3,
+          fill: false,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { stepSize: 1 }
+          }
+        }
+      }
+    });
+  });
+
+/* ================= PRODUCT AVAILABILITY (DONUT CHART) ================= */
+fetch("http://localhost:9091/products")
+  .then(res => res.json())
+  .then(products => {
+
+    const available = products.filter(p => p.available).length;
+    const outOfStock = products.length - available;
+
+    new Chart(document.getElementById("productsChart"), {
+      type: "doughnut",
+      data: {
+        labels: ["Available", "Out of Stock"],
+        datasets: [{
+          data: [available, outOfStock],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: "bottom"
+          }
+        }
+      }
+    });
+  });
 </script>
 
 </body>

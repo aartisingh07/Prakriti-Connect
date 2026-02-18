@@ -2,12 +2,10 @@ package com.prakriti.prakriti_connect.controller;
 
 import com.prakriti.prakriti_connect.dto.AdminOrderDto;
 import com.prakriti.prakriti_connect.dto.OrderDto;
-import com.prakriti.prakriti_connect.model.Delivery;
 import com.prakriti.prakriti_connect.model.Notification;
 import com.prakriti.prakriti_connect.model.Order;
 import com.prakriti.prakriti_connect.model.Product;
 import com.prakriti.prakriti_connect.model.User;
-import com.prakriti.prakriti_connect.repositories.DeliveryRepo;
 import com.prakriti.prakriti_connect.repositories.NotificationRepo;
 import com.prakriti.prakriti_connect.repositories.OrderRepo;
 import com.prakriti.prakriti_connect.repositories.ProductRepo;
@@ -25,9 +23,6 @@ public class OrderController {
 
     @Autowired
     OrderRepo orderRepo;
-
-    @Autowired
-    DeliveryRepo deliveryRepo;
 
     @Autowired
     private ProductRepo productRepo;
@@ -55,17 +50,6 @@ public class OrderController {
         order.setTotalAmount(product.getPrice() + 10);
 
         Order savedOrder = orderRepo.save(order);
-
-        // 🔹 Create Delivery
-        Delivery delivery = new Delivery();
-        delivery.setOrderId(savedOrder.getId());
-        delivery.setName(orderDto.getName());
-        delivery.setPhone(orderDto.getPhone());
-        delivery.setAddress(orderDto.getAddress());
-        delivery.setCity(orderDto.getCity());
-        delivery.setPincode(orderDto.getPincode());
-
-        deliveryRepo.save(delivery);
 
         // 🔔 CREATE NOTIFICATION FOR USER
         Notification notification = new Notification();
