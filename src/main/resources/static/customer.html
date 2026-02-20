@@ -8,6 +8,9 @@
         * {
             box-sizing: border-box;
         }
+        html {
+            scroll-behavior: smooth;
+        }
         html, body {
             margin: 0;
             padding: 0;
@@ -711,6 +714,55 @@
             width: 100%;
             max-width: 420px;              /* matches visual width of cards area */
         }
+        /* ================= CONTACT SECTION ================= */
+        .contact-section {
+            max-width: 1100px;
+            margin: 100px auto 60px;
+            padding: 60px 24px;
+            text-align: center;
+
+            background: rgba(255,255,255,0.92);
+            border-radius: 26px;
+            box-shadow: 0 16px 32px rgba(0,0,0,0.25);
+        }
+
+        .contact-section h2 {
+            font-size: 34px;
+            color: #065f46;
+            margin-bottom: 12px;
+        }
+
+        .contact-subtext {
+            font-size: 17px;
+            color: #444;
+            margin-bottom: 40px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 28px;
+        }
+
+        .contact-card {
+            background: rgba(232,245,233,0.9);
+            padding: 26px;
+            border-radius: 18px;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+        }
+
+        .contact-card h3 {
+            color: #2e7d32;
+            margin-bottom: 8px;
+        }
+        #about,
+        #contact {
+            scroll-margin-top: 90px; /* height of sticky header + spacing */
+        }
+        #about:target {
+            outline: 3px solid rgba(46,125,50,0.4);
+            outline-offset: 8px;
+        }
     </style>
 </head>
 <body>
@@ -735,7 +787,8 @@
             </div>
         </div>
 
-        <a href="news.html" class="nav-link">News</a>
+        <a href="news.html" class="nav-link">Posts</a>
+        <a href="#contact" class="nav-link">Contact</a>
     </nav>
 
     <!-- RIGHT USER -->
@@ -815,7 +868,7 @@
 <section class="welcome-section">
     <div class="video-hero">
         <video autoplay muted loop playsinline class="bg-video">
-            <source src="videos/recycle.mp4" type="video/mp4">
+            <source src="videos/recycle-v3.mp4" type="video/mp4">
         </video>
 
         <div class="welcome-content">
@@ -838,7 +891,7 @@
 <section class="split-section">
 
     <!-- SECTION 3 : ABOUT -->
-    <div class="about-block">
+    <div class="about-block" id="about">
         <h2>🌿About Us</h2>
 
         <p class="about-text">
@@ -886,6 +939,32 @@
     </div>
 
 </section>
+<section id="contact" class="contact-section">
+    <h2>📞 Contact Us</h2>
+
+    <p class="contact-subtext">
+        Have questions, feedback, or suggestions?
+        We’d love to hear from you 🌱
+    </p>
+
+    <div class="contact-grid">
+        <div class="contact-card">
+            <h3>📧 Email</h3>
+            <p>prakriticonnect@gmail.com</p>
+        </div>
+
+        <div class="contact-card">
+            <h3>📱 Phone</h3>
+            <p>+91 9898989898</p>
+        </div>
+
+        <div class="contact-card">
+            <h3>📍 Location</h3>
+            <p>Mumbai, India</p>
+        </div>
+    </div>
+</section>
+
 <!-- ================= FOOTER ================= -->
 <footer class="customer-footer">
     <p>🌿 Prakriti Connect – Customer Dashboard</p>
@@ -1021,7 +1100,7 @@
                 ordersList.appendChild(div);
             });
         });
-}
+    }
     function openNotifications() {
     window.location.hash = "notifications-popup";
 

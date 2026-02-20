@@ -8,35 +8,7 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #5BBA6F;
-    }
-
-    .header {
-      background: linear-gradient(90deg, #065f46, #047857);
-      color: white;
-      padding: 18px 32px;
-      font-size: 22px;
-      font-weight: 600;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    .header-filters {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .header-filters select,
-    .search-input {
-      padding: 8px 10px;
-      border-radius: 6px;
-      border: none;
-      font-size: 14px;
-      outline: none;
+      background: linear-gradient(180deg, #e8f5e9 0%, #c8e6c9 100%);
     }
 
     .search-input {
@@ -52,9 +24,10 @@
 
     .page-title {
       text-align: center;
-      margin: 30px 0;
+      margin: 40px 0 20px;
       color: #065f46;
-      font-size: 30px;
+      font-size: 28px;
+      font-weight: 600;
     }
 
     .products-container {
@@ -69,17 +42,17 @@
 
     .product-card {
       background: white;
-      border-radius: 14px;
+      border-radius: 18px;
       padding: 20px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
       display: flex;
       flex-direction: column;
-      transition: transform 0.2s ease;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
-
     .product-card:hover {
-      transform: translateY(-6px);
+      transform: translateY(-8px);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.12);
     }
 
     .product-img {
@@ -128,68 +101,193 @@
       background: #aaa;
       cursor: not-allowed;
     }
+
+    .hero-card {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 28px 36px 36px;
+      background: #f1f8f4;
+      border-radius: 28px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    }
+
+    /* 🔝 Top inline bar */
+    .hero-topbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .hero-brand {
+      font-size: 26px;
+      font-weight: 700;
+      color: #065f46;
+      white-space: nowrap;
+    }
+
+    .hero-filters-inline {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero-filters-inline select,
+    .hero-filters-inline .search-input {
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1px solid #cde5d6;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .hero-back {
+      background: #e6f4ea;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      color: #065f46;
+      cursor: pointer;
+    }
+
+    /* ⬇ Hero content section */
+    .hero-content {
+      margin-top: 36px;   /* 👈 THIS is the gap you wanted */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .hero-text h1 {
+      font-size: 42px;
+      color: #065f46;
+      margin-bottom: 16px;
+    }
+
+    .hero-text h1 span {
+      color: #2e7d32;
+    }
+
+    .hero-text p {
+      font-size: 17px;
+      color: #374151;
+      max-width: 420px;
+    }
+
+    .hero-image img {
+      width: 360px;
+      max-width: 100%;
+      border-radius: 18px;
+    }
     @media (max-width: 900px) {
-      .header {
+      .hero-topbar {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        text-align: center;
+      }
+
+      .hero-content {
         flex-direction: column;
-        gap: 12px;
+        text-align: center;
       }
 
-      .header-filters {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
-      .search-input {
-        width: 100%;
+      .hero-text h1 {
+        font-size: 34px;
       }
     }
-    .back-btn {
-        background: rgba(255,255,255,0.15);
-        border: none;
-        color: white;
-        padding: 10px 18px;
-        border-radius: 10px;
-        cursor: pointer;
-      }
+/* ================= FOOTER ================= */
+        .customer-footer {
+            margin-top: 80px;
+            padding: 22px 0;
+            text-align: center;
+
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(2px);
+
+            border-top: 1px solid #ddd;
+        }
+
+        .customer-footer p {
+            margin: 6px 0;
+            font-size: 14px;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .customer-footer span {
+            color: #555;
+            font-weight: 500;
+        }
+
+        .customer-footer a {
+            color: #065f46;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .customer-footer a:hover {
+            text-decoration: underline;
+        }
   </style>
 </head>
 
 <body>
 
-<div class="header">
-  <a href="customer.html" class="brand">🌿 Prakriti Connect</a>
+<section class="hero-card">
 
-  <!-- 🔍 SEARCH + FILTERS IN HEADER -->
-  <div class="header-filters">
-    <input
-            type="text"
-            id="searchInput"
-            placeholder="Search product..."
-            class="search-input"
-    />
+  <!-- 🔝 TOP BAR (INLINE) -->
+  <div class="hero-topbar">
+    <div class="hero-brand">🌿 Prakriti Connect</div>
 
-    <select id="nameSort">
-      <option value="">Name</option>
-      <option value="az">A → Z</option>
-      <option value="za">Z → A</option>
-    </select>
+    <div class="hero-filters-inline">
+      <input
+              type="text"
+              id="searchInput"
+              placeholder="Search product..."
+              class="search-input"
+      />
 
-    <select id="priceSort">
-      <option value="">Price</option>
-      <option value="low">Low → High</option>
-      <option value="high">High → Low</option>
-    </select>
+      <select id="nameSort">
+        <option value="">Name</option>
+        <option value="az">A → Z</option>
+        <option value="za">Z → A</option>
+      </select>
 
-    <select id="stockFilter">
-      <option value="">All</option>
-      <option value="in">In Stock</option>
-      <option value="out">Out of Stock</option>
-    </select>
+      <select id="priceSort">
+        <option value="">Price</option>
+        <option value="low">Low → High</option>
+        <option value="high">High → Low</option>
+      </select>
+
+      <select id="stockFilter">
+        <option value="">All</option>
+        <option value="in">In Stock</option>
+        <option value="out">Out of Stock</option>
+      </select>
+    </div>
+
+    <button class="hero-back" onclick="goHome()">← Back</button>
   </div>
 
-  <button class="back-btn" onclick="goHome()">← Back</button>
-</div>
+  <!-- ⬇ HERO CONTENT -->
+  <div class="hero-content">
+    <div class="hero-text">
+      <h1>Small Actions,<br><span>Big Impact</span></h1>
+      <p>
+        Every eco-friendly choice you make helps protect nature
+        and build a sustainable future.
+      </p>
+    </div>
 
+    <div class="hero-image">
+      <img src="images/eco-hero.png" alt="Eco Illustration">
+    </div>
+  </div>
+
+</section>
 
 <div class="page-title">🌱 Eco-Friendly Products</div>
 
@@ -210,7 +308,20 @@
     <button onclick="closeModal()" style="background:none;border:none;color:red;cursor:pointer;">Cancel</button>
   </div>
 </div>
-
+<!-- ================= FOOTER ================= -->
+<footer class="customer-footer">
+  <p>🌿 Prakriti Connect – Products</p>
+  <p>
+    <span>Version 1.0</span> •
+    <span>© 2026</span>
+  </p>
+  <p>
+    Built by <strong>Aarti Singh</strong> |
+    <a href="https://github.com/aartisingh07" target="_blank">
+      GitHub
+    </a>
+  </p>
+</footer>
 <script>
   const productsContainer = document.getElementById("productsContainer");
   const searchInput = document.getElementById("searchInput");

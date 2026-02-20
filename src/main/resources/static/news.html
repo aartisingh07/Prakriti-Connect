@@ -11,19 +11,32 @@
             margin: 0;
             padding: 0;
             width: 100%;
+            height: 100%;
         }
 
         body::before {
             content: "";
             position: fixed;
             inset: 0;
-            background: rgba(255,255,255,0.25);
+            background: linear-gradient(
+                rgba(6, 95, 70, 0.55),
+                rgba(6, 95, 70, 0.55)
+            );
             z-index: -1;
         }
 
         body {
-            background-color: #5BBA6F;
             font-family: 'Segoe UI', sans-serif;
+
+            background-image: url("images/news.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         /* ================= HEADER ================= */
@@ -66,7 +79,7 @@
 
         .news-title {
             text-align: center;
-            color: royalblue;
+            color: #F1F8F4;
             font-size: 28px;
             margin-bottom: 30px;
         }
@@ -167,6 +180,39 @@
             transform: translateY(0);
             box-shadow: none;
         }
+        /* ================= FOOTER ================= */
+        .customer-footer {
+            margin-top: auto;
+            padding: 22px 0;
+            text-align: center;
+
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(2px);
+
+            border-top: 1px solid #ddd;
+        }
+
+        .customer-footer p {
+            margin: 6px 0;
+            font-size: 14px;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .customer-footer span {
+            color: #555;
+            font-weight: 500;
+        }
+
+        .customer-footer a {
+            color: #065f46;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .customer-footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -178,7 +224,7 @@
 </header>
 
 <section class="news-container">
-    <h2 class="news-title">📰 Latest News & Updates</h2>
+    <h2 class="news-title">📰 Latest News & Updates through Posts</h2>
     <div id="newsList" class="news-grid"></div>
 </section>
 
@@ -204,7 +250,20 @@
         <button class="close-btn" onclick="closePopup()">Close</button>
     </div>
 </div>
-
+<!-- ================= FOOTER ================= -->
+<footer class="customer-footer">
+    <p>🌿 Prakriti Connect – Posts</p>
+    <p>
+        <span>Version 1.0</span> •
+        <span>© 2026</span>
+    </p>
+    <p>
+        Built by <strong>Aarti Singh</strong> |
+        <a href="https://github.com/aartisingh07" target="_blank">
+            GitHub
+        </a>
+    </p>
+</footer>
 <script>
     function goHome() {
         window.location.href = "customer.html";
