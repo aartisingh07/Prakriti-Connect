@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Prakriti Connect - Admin Panel</title>
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <style>
     * {
       margin: 0;
@@ -669,7 +670,6 @@
 
     <input id="pName" placeholder="Product Name" />
     <input id="pPrice" type="number" placeholder="Price" />
-    <input id="pStock" type="number" placeholder="Stock" />
 
     <button class="admin-btn add-product-btn" onclick="saveProduct()">
       Save Product
@@ -726,7 +726,24 @@
 
   </div>
 </div>
-
+<script>
+  function showToast(message, type = "success") {
+    Toastify({
+      text: message,
+      duration: 3000,
+      gravity: "top",
+      position: "right",
+      close: true,
+      stopOnFocus: true,
+      style: {
+        background:
+          type === "success"
+            ? "linear-gradient(to right, #2e7d32, #66bb6a)"
+            : "linear-gradient(to right, #c62828, #ef5350)"
+      }
+    }).showToast();
+  }
+</script>
 <script>
   function setActiveSidebar(activeId) {
   const links = document.querySelectorAll(".sidebar-link");
@@ -747,7 +764,10 @@
   const role = localStorage.getItem("role");
 
   if (!adminId || role !== "admin") {
-    window.location.href = "login.html";
+    // 🔑 STEP 4 FLAG
+    sessionStorage.setItem("authRequired", "true");
+
+    window.location.replace("login.html");
   }
 
   fetch(`http://localhost:9091/admin/get-details/${adminId}`)
@@ -812,10 +832,27 @@
   }
 
   function saveProduct() {
+    const nameInput = document.getElementById("pName");
+    const priceInput = document.getElementById("pPrice");
+
+    const productName = nameInput.value.trim();
+    const price = Number(priceInput.value);
+
+    if (!productName) {
+      showToast("Product name cannot be empty", "error");
+      nameInput.focus();
+      return;
+    }
+
+    if (!price || price <= 0) {
+      showToast("Price must be greater than 0", "error");
+      priceInput.focus();
+      return;
+    }
 
     const product = {
-      productName: document.getElementById("pName").value,
-      price: document.getElementById("pPrice").value
+      productName,
+      price
     };
 
     fetch("http://localhost:9091/admin/products", {
@@ -823,12 +860,29 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(product)
     })
-            .then(res => res.text())
-            .then(msg => {
-              alert(msg);
-              closeAddProduct();
-            })
-            .catch(() => alert("Failed to add product"));
+      .then(res => res.text())
+      .then(msg => {
+        const lower = msg.toLowerCase();
+
+        if (lower.includes("already")) {
+          showToast("This product already exists", "error");
+          return;
+        }
+
+        if (lower.includes("invalid")) {
+          showToast("Invalid product details", "error");
+          return;
+        }
+
+        showToast("Product added successfully 🌿");
+
+        nameInput.value = "";
+        priceInput.value = "";
+        closeAddProduct();
+      })
+      .catch(() => {
+        showToast("Failed to add product", "error");
+      });
   }
   function openProducts() {
     setActiveSidebar("nav-products");
@@ -1038,13 +1092,13 @@
     fetch(`http://localhost:9091/news/${id}`, {
       method: "DELETE"
     })
-            .then(() => {
-              alert("News deleted successfully");
-              loadNews(); // refresh list
-            })
-            .catch(() => {
-              alert("Failed to delete news");
-            });
+      .then(() => {
+        showToast("News deleted successfully 🗑");
+        loadNews();
+      })
+      .catch(() => {
+        showToast("Failed to delete news", "error");
+      });
   }
   function goHome() {
   setActiveSidebar("nav-home");

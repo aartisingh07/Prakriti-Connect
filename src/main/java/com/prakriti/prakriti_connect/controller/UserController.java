@@ -10,6 +10,7 @@ import com.prakriti.prakriti_connect.repositories.NotificationRepo;
 import com.prakriti.prakriti_connect.repositories.OrderRepo;
 import com.prakriti.prakriti_connect.repositories.ProductRepo;
 import com.prakriti.prakriti_connect.repositories.UserRepo;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -143,5 +144,11 @@ public class UserController {
             }
         }
         notificationRepo.saveAll(notifications);
+    }
+
+    @DeleteMapping("/users/{userId}/notifications")
+    @Transactional
+    public void deleteUserNotifications(@PathVariable int userId) {
+        notificationRepo.deleteAllForUser(userId);
     }
 }

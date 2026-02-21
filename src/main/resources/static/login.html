@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prakriti Connect - Login</title>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <style>
         /* ================= RESET ================= */
         * {
@@ -320,6 +321,10 @@
         .customer-footer a:hover {
             text-decoration: underline;
         }
+        /* 🔔 FORCE TOASTIFY ABOVE EVERYTHING */
+        .toastify {
+            z-index: 99999 !important;
+        }
     </style>
 </head>
 
@@ -461,6 +466,26 @@
             .catch(() => showMessage("Server error. Try again.", "error"));
     });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (sessionStorage.getItem("authRequired") === "true") {
 
+            Toastify({
+                text: "🔐 Please login to continue",
+                duration: 3500,
+                gravity: "top",
+                position: "right",
+                close: true,
+                stopOnFocus: true,
+                style: {
+                    background: "linear-gradient(to right, #d32f2f, #b71c1c)"
+                }
+            }).showToast();
+
+            // 🔑 remove flag so toast shows only once
+            sessionStorage.removeItem("authRequired");
+        }
+    });
+</script>
 </body>
 </html>

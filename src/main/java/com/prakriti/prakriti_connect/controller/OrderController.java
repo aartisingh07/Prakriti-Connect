@@ -1,6 +1,7 @@
 package com.prakriti.prakriti_connect.controller;
 
 import com.prakriti.prakriti_connect.dto.AdminOrderDto;
+import com.prakriti.prakriti_connect.dto.CustomerOrderDto;
 import com.prakriti.prakriti_connect.dto.OrderDto;
 import com.prakriti.prakriti_connect.model.Notification;
 import com.prakriti.prakriti_connect.model.Order;
@@ -64,8 +65,26 @@ public class OrderController {
     }
 
     @GetMapping("/orders/user/{userId}")
-    public List<Order> getOrdersByUserId(@PathVariable int userId) {
-        return orderRepo.findByUserId(userId);
+    public List<CustomerOrderDto> getOrdersByUserId(@PathVariable int userId) {
+
+        List<Order> orders = orderRepo.findByUserId(userId);
+        List<CustomerOrderDto> list = new ArrayList<>();
+
+        for (Order o : orders) {
+
+            Product product = productRepo.findById(o.getProductId()).orElse(null);
+
+            CustomerOrderDto dto = new CustomerOrderDto();
+            dto.setOrderId(o.getId());
+            dto.setProductName(product != null ? product.getProductName() : "NA");
+            dto.setStatus(o.getStatus());
+            dto.setTotalAmount(o.getTotalAmount());
+            dto.setOrderDate(o.getOrderDate());
+
+            list.add(dto);
+        }
+
+        return list;
     }
 
     @GetMapping("/admin/orders")

@@ -40,8 +40,20 @@ public class ProductController {
     @PostMapping("/admin/products")
     public String addProduct(@RequestBody AddProductDto dto) {
 
+        String productName = dto.getProductName().trim();
+
+        // ❌ Basic validation
+        if (productName.isEmpty() || dto.getPrice() <= 0) {
+            return "Invalid product data";
+        }
+
+        // ❌ Duplicate product check
+        if (productRepo.existsByProductNameIgnoreCase(productName)) {
+            return "Product already exists";
+        }
+
         Product product = new Product();
-        product.setProductName(dto.getProductName());
+        product.setProductName(productName);
         product.setPrice(dto.getPrice());
 
         // default values
@@ -50,18 +62,19 @@ public class ProductController {
 
         productRepo.save(product);
 
-    // 🔔 CREATE NOTIFICATION FOR ALL USERS
+        // 🔔 CREATE NOTIFICATION FOR ALL USERS
         List<User> users = userRepo.findAll();
 
         for (User user : users) {
             Notification n = new Notification();
             n.setUserId(user.getId());
-            n.setType("PRODUCT");               // ✅ VERY IMPORTANT
+            n.setType("PRODUCT");
             n.setRead(false);
             n.setMessage("🛍 New eco product added: " + product.getProductName());
 
             notificationRepo.save(n);
         }
+
         return "Product Added Successfully";
     }
 

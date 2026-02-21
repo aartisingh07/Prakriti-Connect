@@ -2,6 +2,7 @@ package com.prakriti.prakriti_connect.repositories;
 
 import com.prakriti.prakriti_connect.model.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -22,4 +23,10 @@ public interface NotificationRepo extends JpaRepository<Notification, Integer> {
         AND n.isRead = false
     """)
     long countUnread(@Param("userId") int userId);
+    @Query("""
+    DELETE FROM Notification n
+    WHERE n.userId = :userId
+""")
+    @Modifying
+    void deleteAllForUser(@Param("userId") int userId);
 }

@@ -764,6 +764,9 @@
             outline-offset: 8px;
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
 </head>
 <body>
 <header class="main-header">
@@ -799,7 +802,7 @@
 
             <div class="user-menu">
                 <span id="menu-userid">ID: --</span>
-                <a href="login.html" class="logout">Logout</a>
+                <a href="javascript:void(0)" class="logout" onclick="logout()">Logout</a>
             </div>
         </div>
     </div>
@@ -859,6 +862,9 @@
         </div>
 
         <div class="popup-actions">
+            <button class="btn-primary" onclick="clearNotifications()">
+                🗑 Clear All
+            </button>
             <a href="#" class="close-btn">Close</a>
         </div>
     </div>
@@ -979,7 +985,26 @@
         </a>
     </p>
 </footer>
-
+<script>
+    function showToast(message, type = "success") {
+        Toastify({
+            text: message,
+            duration: 3500,
+            gravity: "top",
+            position: "right",
+            close: true,
+            stopOnFocus: true,
+            style: {
+                background: type === "success"
+                    ? "linear-gradient(135deg, #2e7d32, #43a047)"
+                    : "linear-gradient(135deg, #c62828, #b71c1c)",
+                color: "#fff",
+                borderRadius: "8px",
+                fontWeight: "600"
+            }
+        }).showToast();
+    }
+</script>
 <script>
     let notifications = [];
     // ================= LOAD USER DETAILS FOR MENU =================
@@ -1046,7 +1071,7 @@
             .then(res => res.text())
             .then(data => {
                 if (data.toLowerCase().includes("success")) {
-                    showMessage(data, "green");
+                    showToast("Profile updated successfully 🌱", "success");
 
                     // clear inputs
                     valueInput.value = "";
@@ -1094,8 +1119,13 @@
                 div.style.borderRadius = "8px";
 
                 div.innerHTML = `
-                    <p><strong>Order ID:</strong> ${order.id}</p>
-                    <p><strong>Status:</strong> ${order.status}</p>
+                  <p><strong>Order ID:</strong> ${order.orderId}</p>
+                  <p><strong>Product:</strong> ${order.productName}</p>
+                  <p><strong>Status:</strong> ${order.status}</p>
+                  <p><strong>Total:</strong> ₹${order.totalAmount}</p>
+                  <p style="font-size:12px;color:#555;">
+                    Ordered on: ${order.orderDate.replace("T", " ")}
+                  </p>
                 `;
                 ordersList.appendChild(div);
             });
@@ -1153,12 +1183,48 @@
             }
         })
         .catch(err => console.error("Badge update failed", err));
-}
+    }
+        function clearNotifications() {
+            if (!confirm("Are you sure you want to clear all notifications?")) return;
+
+            fetch(`http://localhost:9091/users/${userId}/notifications`, {
+                method: "DELETE"
+            })
+            .then(() => {
+                document.getElementById("notificationsList").innerHTML =
+                    "<p>No notifications yet 🌱</p>";
+
+                showToast("All notifications cleared", "success");
+
+                // refresh badge count
+                updateNotificationBadge();
+            })
+            .catch(() => {
+                showToast("Failed to clear notifications", "error");
+            });
+        }
     function loadNotifications() {
         updateNotificationBadge();
     }
     if (userId) {
         loadNotifications();
+    }
+    function logout() {
+            localStorage.removeItem("userId");
+            localStorage.removeItem("role");
+            window.location.replace("login.html");
+        }
+</script>
+<script>
+    const uid = localStorage.getItem("userId");
+    const role = localStorage.getItem("role");
+
+    if (!uid || role !== "customer") {
+      // 🔑 STEP 4 FLAG
+      sessionStorage.setItem("authRequired", "true");
+
+      // redirect to login
+      window.location.replace("login.html");
     }
 </script>
 </body>

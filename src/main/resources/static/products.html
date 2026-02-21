@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Prakriti Connect - Products</title>
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <style>
     body {
       margin: 0;
@@ -421,11 +422,30 @@ function goHome() {
     })
     .then(() => {
       closeModal();
-      alert("✅ Order placed successfully!\n📦 Delivery within 5 days.");
+      showToast("Order placed successfully 🎉", "success");
     })
     .catch(() => alert("❌ Payment failed"));
   }
 </script>
-
+<script>
+  function showToast(message, type = "success") {
+      Toastify({
+          text: message,
+          duration: 3500,
+          gravity: "top",
+          position: "right",
+          close: true,
+          stopOnFocus: true,
+          style: {
+              background: type === "success"
+                  ? "linear-gradient(135deg, #2e7d32, #43a047)"
+                  : "linear-gradient(135deg, #c62828, #b71c1c)",
+              color: "#fff",
+              borderRadius: "8px",
+              fontWeight: "600"
+          }
+      }).showToast();
+  }
+</script>
 </body>
 </html>
